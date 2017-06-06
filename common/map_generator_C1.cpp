@@ -63,32 +63,16 @@ void mapGenerator_C1(sGenerationData &_data)
     mapCheck(_data);
     // setup fill data
     sFillData fillData;
-    fillData.tile = new eTile[mapSize];
     fillData.valid = new bool[mapSize];
     for (uint32_t i = 0; i < mapSize; i++)
-    {
-        fillData.tile[i] = _data.tile[i];
         fillData.valid[i] = false;
-    }
-    fillData.valid[((_data.y / 2) * _data.y) + (_data.x / 2)] = true;
-
-    /*
-    CheckJoiningTiles(map_pointer,fill_data,(map_pointer->w*(map_pointer->h/2))+(map_pointer->w/2));
-    for (int i = 0; i < (map_pointer->w*map_pointer->h); i++)
-    {
-        if (fill_data[i].tile_join) map_pointer->layers[intermediate][i%map_pointer->w][i/map_pointer->w] = Tile_Type::TILE_FLOOR;
-        else map_pointer->layers[intermediate][i%map_pointer->w][i/map_pointer->w] = eTile::WALL;
-    }
-    map_check(map_pointer);
-    if (properties.gen_exits) map_gen_exits (map_pointer);
-*/
-
+    uint32_t startTile = ((_data.y / 2) * _data.y) + (_data.x / 2);
+    fillData.tile = _data.tile[startTile];
+    fillData.valid[startTile] = true;
+    mapFloodFill(_data, fillData, startTile);
+    for (uint32_t i = 0; i < mapSize; i++)
+        _data.tile[i] = (fillData.valid[i]) ? eTile::FLOOR : eTile::WALL;
     // clean up
-    if (fillData.tile != nullptr)
-    {
-        delete [] fillData.tile;
-        fillData.tile = nullptr;
-    }
     if (fillData.valid != nullptr)
     {
         delete [] fillData.valid;

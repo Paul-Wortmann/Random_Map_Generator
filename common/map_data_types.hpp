@@ -43,7 +43,7 @@ enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3 };
 
 struct sFillData
 {
-    eTile *tile = nullptr;
+    eTile tile = eTile::FLOOR;
     bool  *valid = nullptr;
 };
 

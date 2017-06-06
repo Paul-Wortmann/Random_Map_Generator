@@ -23,7 +23,42 @@
 
 #include "map_export_debug.hpp"
 
+uint32_t checkTile(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_parentTile, const uint32_t &_tile)
+{
+    uint32_t mapSize = _data.x * _data.y;
+    uint32_t returnValue = 0;
+    if ((_tile >= 0) && (_tile < mapSize))
+    {
+        if ((_fillData.valid[_parentTile]) && (_data.tile[_tile] == _fillData.tile))
+            _fillData.valid[_tile] = true;
+        returnValue = (_fillData.valid[_tile]) ? 1 : 0;
+    }
+    return returnValue;
+}
+
+uint32_t checkNeighboringTiles(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_tile)
+{
+    uint32_t mapSize = _data.x * _data.y;
+    uint32_t returnValue = 1;
+    _fillData.valid[_tile] = true;
+    for (uint32_t i = 0; i < _data.x + _data.y; i++)
+    {
+        for (uint32_t j = 0; j < mapSize; j++)
+        {
+            returnValue += checkTile(_data, _fillData, j, j+1);
+            returnValue += checkTile(_data, _fillData, j, j-1);
+            returnValue += checkTile(_data, _fillData, j, j+_data.x);
+            returnValue += checkTile(_data, _fillData, j, j+_data.x+1);
+            returnValue += checkTile(_data, _fillData, j, j+_data.x-1);
+            returnValue += checkTile(_data, _fillData, j, j-_data.x);
+            returnValue += checkTile(_data, _fillData, j, j-_data.x+1);
+            returnValue += checkTile(_data, _fillData, j, j-_data.x-1);
+        }
+    }
+    return returnValue;
+}
+
 void mapFloodFill(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_startTile)
 {
-
+    checkNeighboringTiles(_data, _fillData, _startTile);
 }
