@@ -30,12 +30,12 @@ void mapGenerator_C1(sGenerationData &_data)
     _data.tile = new eTile[mapSize];
     for (uint16_t i = 0; i < _data.y; i++)
         for (uint16_t j = 0; j < _data.x; j++)
-            _data.tile[(i * _data.y) + j] = ((i == 0)||(i == _data.y-1)||(j == 0)||(j == _data.x-1)) ? eTile::WALL : eTile::FLOOR;
+            _data.tile[(i * _data.x) + j] = ((i == 0)||(i == _data.y-1)||(j == 0)||(j == _data.x-1)) ? eTile::WALL : eTile::FLOOR;
     for (int i = 0; i < (mapSize * C1_DENSITY); i++)
         _data.tile[rand() % mapSize] = eTile::WALL;
     for(int i = -1; i < 2; i++)
         for(int j = -1; j < 2; j++)
-            _data.tile[(((_data.y / 2) + i) * _data.y) + ((_data.x / 2) + j)] = eTile::FLOOR;
+            _data.tile[(((_data.y / 2) + i) * _data.x) + ((_data.x / 2) + j)] = eTile::FLOOR;
     for (uint16_t itteration = 0; itteration < C1_ITTERATIONS; itteration++)
     {
         for (uint16_t i = 1; i < _data.x-1; i++)
@@ -43,20 +43,20 @@ void mapGenerator_C1(sGenerationData &_data)
             for (uint16_t j = 1; j < _data.y-1; j++)
             {
                 uint16_t num_walls = 0;
-                if (_data.tile[((i + 0) * _data.y) + (j - 1)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i + 0) * _data.y) + (j + 1)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i - 1) * _data.y) + (j + 0)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i - 1) * _data.y) + (j - 1)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i - 1) * _data.y) + (j + 1)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i + 1) * _data.y) + (j + 0)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i + 1) * _data.y) + (j - 1)] == eTile::WALL) num_walls++;
-                if (_data.tile[((i + 1) * _data.y) + (j + 1)] == eTile::WALL) num_walls++;
-                if ((_data.tile[(i*_data.y)+j] == eTile::WALL) && (num_walls > 3))
-                    _data.tile[(i*_data.y)+j] = eTile::WALL;
-                else if ((_data.tile[(i*_data.y)+j] == eTile::FLOOR) && (num_walls > 4))
-                    _data.tile[(i*_data.y)+j] = eTile::WALL;
+                if (_data.tile[((i + 0) * _data.x) + (j - 1)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i + 0) * _data.x) + (j + 1)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i - 1) * _data.x) + (j + 0)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i - 1) * _data.x) + (j - 1)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i - 1) * _data.x) + (j + 1)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i + 1) * _data.x) + (j + 0)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i + 1) * _data.x) + (j - 1)] == eTile::WALL) num_walls++;
+                if (_data.tile[((i + 1) * _data.x) + (j + 1)] == eTile::WALL) num_walls++;
+                if ((_data.tile[(i*_data.x)+j] == eTile::WALL) && (num_walls > 3))
+                    _data.tile[(i*_data.x)+j] = eTile::WALL;
+                else if ((_data.tile[(i*_data.x)+j] == eTile::FLOOR) && (num_walls > 4))
+                    _data.tile[(i*_data.x)+j] = eTile::WALL;
                 else
-                    _data.tile[(i*_data.y)+j] = eTile::FLOOR;
+                    _data.tile[(i*_data.x)+j] = eTile::FLOOR;
             }
         }
     }
@@ -66,7 +66,7 @@ void mapGenerator_C1(sGenerationData &_data)
     fillData.valid = new bool[mapSize];
     for (uint32_t i = 0; i < mapSize; i++)
         fillData.valid[i] = false;
-    uint32_t startTile = ((_data.y / 2) * _data.y) + (_data.x / 2);
+    uint32_t startTile = ((_data.y / 2) * _data.x) + (_data.x / 2);
     fillData.tile = _data.tile[startTile];
     fillData.valid[startTile] = true;
     mapFloodFill(_data, fillData, startTile);

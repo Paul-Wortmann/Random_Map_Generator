@@ -21,27 +21,13 @@
  * @date 2017-06-05
  */
 
-#ifndef MAPGENERATOR_HPP
-#define MAPGENERATOR_HPP
+#ifndef MAPGENERATOR_D2_HPP
+#define MAPGENERATOR_D2_HPP
 
 #include "map_data_types.hpp"
-#include "map_export_debug.hpp"
-#include "map_export_flare.hpp"
-#include "map_generator_C1.hpp"
-//#include "map_generator_D1.hpp"
-#include "map_generator_D2.hpp"
+#include "map_floodfill.hpp"
+#include "map_utils.hpp"
 
-class cMapGenerator
-{
-    public:
-        cMapGenerator(void) = default;
-        virtual ~cMapGenerator(void) = default;
-        cMapGenerator(const cMapGenerator& _other) = default;
-        cMapGenerator& operator=(const cMapGenerator& _other) {if (this == &_other) return *this; return *this;}
-        void free(sGenerationData &_data);
-        uint16_t generate(sGenerationData &_data);
-    protected:
-    private:
-};
+void mapGenerator_D2(sGenerationData &_data);
 
-#endif // MAPGENERATOR_HPP
+#endif // MAPGENERATOR_D2_HPP

@@ -27,23 +27,24 @@
 
 #include <cstdint>
 #include <cstdlib>
-#include <string>
-#include <fstream>
 #include <ctime>
+#include <cmath>
+#include <fstream>
+#include <string>
 
 #define RMG_VERSION "0.0.1"
 
 #define C1_DENSITY 0.6f
 #define C1_ITTERATIONS 2
 
-#define D1_ROOM_MIN_X 5
-#define D1_ROOM_MIN_Y D1_ROOM_MIN_X
-#define D1_ROOM_MAX_X 9
-#define D1_ROOM_MAX_Y D1_ROOM_MAX_X
+#define ROOM_MIN_X 11
+#define ROOM_MIN_Y ROOM_MIN_X
+#define ROOM_MAX_X 15
+#define ROOM_MAX_Y ROOM_MAX_X
 
-enum class eAlgorithm : uint16_t { AC1 = 0, AC2 = 1 };
+enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
-enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3 };
+enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
 //enum eObject    : uint16_t { NONE = 0, EXIT = 1, CHEST = 2 };
 
 struct sFillData
@@ -58,6 +59,7 @@ struct sGenerationData
     uint64_t seed = 0;
     uint16_t x = 100;
     uint16_t y = 100;
+    uint32_t mapSize = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
     eExporter exporter = eExporter::EF1;
     std::string fileName = "default.txt";
@@ -72,5 +74,13 @@ struct sMapNode
     sMapNode* right = nullptr;
 };
 
+struct sRoom
+{
+    bool valid;
+    uint16_t x;
+    uint16_t y;
+    uint16_t w;
+    uint16_t h;
+};
 
 #endif // MAPDATATYPES_HPP

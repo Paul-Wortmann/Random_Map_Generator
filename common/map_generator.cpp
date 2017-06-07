@@ -46,7 +46,11 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
             case eAlgorithm::AC1:
                 mapGenerator_C1(_data);
             break;
-            case eAlgorithm::AC2:
+            case eAlgorithm::AD1:
+                //mapGenerator_D1(_data);
+            break;
+            case eAlgorithm::AD2:
+                mapGenerator_D2(_data);
             break;
             default:
                 return EXIT_FAILURE;
