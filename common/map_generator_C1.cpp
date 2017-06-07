@@ -31,12 +31,12 @@ void mapGenerator_C1(sGenerationData &_data)
     for (uint16_t i = 0; i < _data.y; i++)
         for (uint16_t j = 0; j < _data.x; j++)
             _data.tile[(i * _data.x) + j] = ((i == 0)||(i == _data.y-1)||(j == 0)||(j == _data.x-1)) ? eTile::WALL : eTile::FLOOR;
-    for (int i = 0; i < (mapSize * C1_DENSITY); i++)
+    for (int i = 0; i < (mapSize * DENSITY); i++)
         _data.tile[rand() % mapSize] = eTile::WALL;
     for(int i = -1; i < 2; i++)
         for(int j = -1; j < 2; j++)
             _data.tile[(((_data.y / 2) + i) * _data.x) + ((_data.x / 2) + j)] = eTile::FLOOR;
-    for (uint16_t itteration = 0; itteration < C1_ITTERATIONS; itteration++)
+    for (uint16_t itteration = 0; itteration < ITTERATIONS; itteration++)
     {
         for (uint16_t i = 1; i < _data.x-1; i++)
         {

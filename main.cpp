@@ -28,7 +28,7 @@ int main(int charc, char** charv)
     cMapGenerator mapGenerator;
     sGenerationData generationData;
 
-    generationData.algorithm = eAlgorithm::AD2;
+    generationData.algorithm = eAlgorithm::AM1;
     generationData.exporter = eExporter::ED1;
 
     mapGenerator.generate(generationData);

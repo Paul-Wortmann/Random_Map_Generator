@@ -34,15 +34,26 @@
 
 #define RMG_VERSION "0.0.1"
 
-#define C1_DENSITY 0.6f
-#define C1_ITTERATIONS 2
+#define WALL_WIDTH  3
+#define EXITS_COUNT 4
+
+#define DENSITY 0.6f
+#define ITTERATIONS 2
 
 #define ROOM_MIN_X 11
 #define ROOM_MIN_Y ROOM_MIN_X
 #define ROOM_MAX_X 15
 #define ROOM_MAX_Y ROOM_MAX_X
 
-enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2 };
+#define DIRECTION_BIAS_THRESHOLD 32
+#define DIRECTION_BIAS_NONE      0
+#define DIRECTION_BIAS_NORTH     1
+#define DIRECTION_BIAS_EAST      2
+#define DIRECTION_BIAS_SOUTH     3
+#define DIRECTION_BIAS_WEST      4
+
+
+enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
 //enum eObject    : uint16_t { NONE = 0, EXIT = 1, CHEST = 2 };
