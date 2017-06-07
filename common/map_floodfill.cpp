@@ -21,13 +21,13 @@
  * @date 2017-06-05
  */
 
-#include "map_export_debug.hpp"
+#include "map_floodfill.hpp"
 
 uint32_t checkTile(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_parentTile, const uint32_t &_tile)
 {
     uint32_t mapSize = _data.x * _data.y;
     uint32_t returnValue = 0;
-    if ((_tile >= 0) && (_tile < mapSize))
+    if ((_tile > 0) && (_tile < mapSize))
     {
         if ((_fillData.valid[_parentTile]) && (_data.tile[_tile] == _fillData.tile))
             _fillData.valid[_tile] = true;

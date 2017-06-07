@@ -36,6 +36,11 @@
 #define C1_DENSITY 0.6f
 #define C1_ITTERATIONS 2
 
+#define D1_ROOM_MIN_X 5
+#define D1_ROOM_MIN_Y D1_ROOM_MIN_X
+#define D1_ROOM_MAX_X 9
+#define D1_ROOM_MAX_Y D1_ROOM_MAX_X
+
 enum class eAlgorithm : uint16_t { AC1 = 0, AC2 = 1 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3 };
@@ -58,6 +63,13 @@ struct sGenerationData
     std::string fileName = "default.txt";
     eTile *tile = nullptr;
 //    eObject *object = nullptr;
+};
+
+struct sMapNode
+{
+    sGenerationData data = {};
+    sMapNode* left = nullptr;
+    sMapNode* right = nullptr;
 };
 
 

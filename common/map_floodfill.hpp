@@ -26,6 +26,7 @@
 
 #include "map_data_types.hpp"
 
+uint32_t checkNeighboringTiles(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_tile);
 void mapFloodFill(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_startTile);
 
 #endif // MAP_FLOOD_FILL_HPP

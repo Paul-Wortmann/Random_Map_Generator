@@ -21,10 +21,11 @@
  * @date 2017-06-05
  */
 
-#include "map_data_types.hpp"
+#include "map_export_debug.hpp"
 
 void mapExport_Debug(const sGenerationData &_data)
 {
+    bool graphicalOutput = true;
     std::ofstream t_fstream(_data.fileName.c_str(), std::ifstream::out);
     t_fstream << "[ Version - " << _data.version << " ]" << std::endl;
     t_fstream << "[ Seed - " << _data.seed << " ]" << std::endl;
@@ -35,9 +36,16 @@ void mapExport_Debug(const sGenerationData &_data)
         for (uint16_t j = 0; j < _data.x; j++)
         {
             uint32_t mapTile = (i * _data.y) + j;
-            t_fstream << (uint16_t)_data.tile[mapTile];
-            if (j < _data.x-1)
-            t_fstream << ",";
+            if (graphicalOutput)
+            {
+                t_fstream << (((uint16_t)_data.tile[mapTile] == 0) ? "_" : "W");
+            }
+            else
+            {
+                t_fstream << (uint16_t)_data.tile[mapTile];
+                if (j < _data.x-1)
+                    t_fstream << ",";
+            }
         }
         t_fstream << std::endl;
     }
