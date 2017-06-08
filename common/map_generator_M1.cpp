@@ -45,7 +45,7 @@ bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _d
     {
         switch (_direction_bias)
         {
-            case DIRECTION_BIAS_NORTH:
+            case DIRECTION_BIAS_UP:
                 for (uint16_t wall_count = 1; wall_count <= WALL_WIDTH; wall_count++)
                 {
                     uint16_t t[5];
@@ -61,7 +61,7 @@ bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _d
                     }
                 }
             break;
-            case DIRECTION_BIAS_SOUTH:
+            case DIRECTION_BIAS_DOWN:
                 for (uint16_t wall_count = 1; wall_count <= WALL_WIDTH; wall_count++)
                 {
                     uint16_t t[5];
@@ -77,7 +77,7 @@ bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _d
                     }
                 }
             break;
-            case DIRECTION_BIAS_EAST:
+            case DIRECTION_BIAS_RIGHT:
                 for (uint16_t wall_count = 1; wall_count <= WALL_WIDTH; wall_count++)
                 {
                     uint16_t t[5];
@@ -93,7 +93,7 @@ bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _d
                     }
                 }
             break;
-            case DIRECTION_BIAS_WEST:
+            case DIRECTION_BIAS_LEFT:
                 for (uint16_t wall_count = 1; wall_count <= WALL_WIDTH; wall_count++)
                 {
                     uint16_t t[5];
@@ -122,26 +122,26 @@ bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _d
 void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bias)
 {
     _data.tile[_tile] = eTile::FLOOR;
-    uint32_t tiles_available    = 1;
+    uint32_t tiles_available = 1;
     bool new__direction_bias = false;
-    uint16_t tile_direction      = 0;
+    uint16_t tile_direction = 0;
     while (tiles_available > 0)
     {
         tiles_available = 0;
         uint32_t tile_north = _tile-_data.x;
-        bool tile_north_ok = map_gen_maze_check_tile(_data, tile_north, DIRECTION_BIAS_NORTH);
+        bool tile_north_ok = map_gen_maze_check_tile(_data, tile_north, DIRECTION_BIAS_UP);
         if (tile_north_ok) tiles_available++;
 
         uint32_t tile_south = _tile+_data.x;
-        bool tile_south_ok = map_gen_maze_check_tile(_data, tile_south, DIRECTION_BIAS_SOUTH);
+        bool tile_south_ok = map_gen_maze_check_tile(_data, tile_south, DIRECTION_BIAS_DOWN);
         if (tile_south_ok) tiles_available++;
 
         uint32_t tile_east = _tile-1;
-        bool tile_east_ok = map_gen_maze_check_tile(_data, tile_east, DIRECTION_BIAS_EAST);
+        bool tile_east_ok = map_gen_maze_check_tile(_data, tile_east, DIRECTION_BIAS_RIGHT);
         if (tile_east_ok) tiles_available++;
 
         uint32_t tile_west = _tile+1;
-        bool tile_west_ok = map_gen_maze_check_tile(_data, tile_west, DIRECTION_BIAS_WEST);
+        bool tile_west_ok = map_gen_maze_check_tile(_data, tile_west, DIRECTION_BIAS_LEFT);
         if (tile_west_ok) tiles_available++;
 
         if ((new__direction_bias) || (_direction_bias == DIRECTION_BIAS_NONE)) tile_direction = (rand() % 4) + 1;
@@ -157,7 +157,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
         }
         switch (tile_direction)
         {
-            case DIRECTION_BIAS_NORTH:
+            case DIRECTION_BIAS_UP:
                 if (tile_north_ok)
                 {
                     tiles_available--;
@@ -165,7 +165,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
                     map_gen_maze(_data, tile_north, _direction_bias);
                 }
             break;
-            case DIRECTION_BIAS_SOUTH:
+            case DIRECTION_BIAS_DOWN:
                 if (tile_south_ok)
                 {
                     tiles_available--;
@@ -173,7 +173,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
                     map_gen_maze(_data, tile_south, _direction_bias);
                 }
             break;
-            case DIRECTION_BIAS_EAST:
+            case DIRECTION_BIAS_RIGHT:
                 if (tile_east_ok)
                 {
                     tiles_available--;
@@ -181,7 +181,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
                     map_gen_maze(_data, tile_east, _direction_bias);
                 }
             break;
-            case DIRECTION_BIAS_WEST:
+            case DIRECTION_BIAS_LEFT:
                 if (tile_west_ok)
                 {
                     tiles_available--;
@@ -190,7 +190,6 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
                 }
             break;
             default:
-                // report error?
                 tiles_available--;
             break;
         }
@@ -212,9 +211,9 @@ bool add_room(sGenerationData &_data, sRoom &_room)
                 return false;
         }
     }
-    for (uint16_t i = _room.x-(uint16_t)_room.w/2.0f; i < _room.x+(uint16_t)_room.w/2.0f; i++)
+    for (uint16_t i = _room.y-(uint16_t)_room.h/2.0f; i < _room.y+(uint16_t)_room.h/2.0f; i++)
     {
-        for (uint16_t j = _room.y-(uint16_t)_room.h/2.0f; j < _room.y+(uint16_t)_room.h/2.0f; j++)
+        for (uint16_t j = _room.x-(uint16_t)_room.w/2.0f; j < _room.x+(uint16_t)_room.w/2.0f; j++)
         {
             _data.tile[(i * _data.x) + j] = eTile::FLOOR;
         }
@@ -224,29 +223,24 @@ bool add_room(sGenerationData &_data, sRoom &_room)
 
 bool connect_room(sGenerationData &_data, sRoom &_room)
 {
-    if (abs(_room.x - _data.x/2) > abs(_room.y - _data.y/2))
+    uint16_t direction_axis = (abs(_room.x - _data.x) > abs(_room.y - _data.y)) ? AXIS_BIAS_X : AXIS_BIAS_Y;
+    uint16_t direction_bias = DIRECTION_BIAS_NONE;
+    direction_bias = (direction_axis == AXIS_BIAS_X) ? ((_room.x > _data.x/2) ? DIRECTION_BIAS_RIGHT : DIRECTION_BIAS_LEFT) : ((_room.y > _data.y/2) ? DIRECTION_BIAS_DOWN : DIRECTION_BIAS_UP);
+    bool foundWall = false;
+    bool pathFound = false;
+    uint32_t pathPos = (_room.y * _data.x) + _room.x;
+    uint16_t pathMax = (direction_axis == AXIS_BIAS_X) ? (abs(_data.x - _room.x) - 1) : (abs(_data.y - _room.y) - 1);
+    for (uint16_t i = 0; i < pathMax; i++)
     {
-        bool found_wall = false;
-        for (uint16_t i = _room.x; (i != _data.x-1)||(i != 0);)
+        if (!pathFound)
         {
-            if ((found_wall)&&(_data.tile[(_room.y * _data.x) + i] == eTile::FLOOR))
-                break;
-            if (_data.tile[(_room.y * _data.x) + i] == eTile::WALL) found_wall = true;
-            _data.tile[(_room.y * _data.x) + i] = eTile::FLOOR;
-            if (_room.x > _data.x/2) i--;
-            else  i++;
-        }
-    }
-    else
-    {
-        bool found_wall = false;
-        for (uint16_t i = _room.y; (i != _data.y-1)||(i != 0);)
-        {
-            if ((found_wall)&&(_data.tile[(i * _data.x) + _room.x] == eTile::FLOOR)) break;
-            if (_data.tile[(i * _data.x) + _room.x] == eTile::WALL) found_wall = true;
-            _data.tile[(i * _data.x) + _room.x] = eTile::FLOOR;
-            if (_room.y > _data.y/2) i--;
-            else  i++;
+            if ((!foundWall)&&(_data.tile[pathPos] == eTile::WALL))
+                foundWall = true;
+            if ((foundWall)&&(_data.tile[pathPos] == eTile::FLOOR))
+                pathFound = true;
+            if ((foundWall)&&(_data.tile[pathPos] == eTile::WALL))
+                _data.tile[pathPos] = eTile::FLOOR;
+            pathPos = (direction_axis == AXIS_BIAS_X) ? ((direction_bias == DIRECTION_BIAS_RIGHT) ? pathPos-1 : pathPos+1) : ((direction_bias == DIRECTION_BIAS_DOWN) ? pathPos-_data.x : pathPos+_data.x);
         }
     }
     return true;

@@ -30,6 +30,7 @@
 #include <ctime>
 #include <cmath>
 #include <fstream>
+#include <iostream>
 #include <string>
 
 #define RMG_VERSION "0.0.1"
@@ -46,12 +47,15 @@
 #define ROOM_MAX_Y ROOM_MAX_X
 
 #define DIRECTION_BIAS_THRESHOLD 32
-#define DIRECTION_BIAS_NONE      0
-#define DIRECTION_BIAS_NORTH     1
-#define DIRECTION_BIAS_EAST      2
-#define DIRECTION_BIAS_SOUTH     3
-#define DIRECTION_BIAS_WEST      4
+#define DIRECTION_BIAS_NONE  0
+#define DIRECTION_BIAS_UP    1
+#define DIRECTION_BIAS_DOWN  2
+#define DIRECTION_BIAS_LEFT  3
+#define DIRECTION_BIAS_RIGHT 4
 
+#define AXIS_BIAS_NONE 0
+#define AXIS_BIAS_X    1
+#define AXIS_BIAS_Y    2
 
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };

@@ -38,7 +38,14 @@ void mapExport_Debug(const sGenerationData &_data)
             uint32_t mapTile = (i * _data.y) + j;
             if (graphicalOutput)
             {
-                t_fstream << (((uint16_t)_data.tile[mapTile] == 0) ? "_" : "W");
+                if (_data.tile[mapTile] == eTile::FLOOR)
+                    t_fstream << "_";
+                else if (_data.tile[mapTile] == eTile::WALL)
+                    t_fstream << "W";
+                else if (_data.tile[mapTile] == eTile::PATH)
+                    t_fstream << "P";
+                else
+                    t_fstream << "?";
             }
             else
             {
