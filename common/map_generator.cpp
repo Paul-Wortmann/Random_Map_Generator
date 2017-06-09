@@ -73,3 +73,4 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
     }
     return EXIT_SUCCESS;
 }
+

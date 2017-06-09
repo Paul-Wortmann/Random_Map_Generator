@@ -35,28 +35,6 @@
 
 #define RMG_VERSION "0.0.1"
 
-#define WALL_WIDTH  3
-#define EXITS_COUNT 4
-
-#define DENSITY 0.6f
-#define ITTERATIONS 2
-
-#define ROOM_MIN_X 11
-#define ROOM_MIN_Y ROOM_MIN_X
-#define ROOM_MAX_X 15
-#define ROOM_MAX_Y ROOM_MAX_X
-
-#define DIRECTION_BIAS_THRESHOLD 32
-#define DIRECTION_BIAS_NONE  0
-#define DIRECTION_BIAS_UP    1
-#define DIRECTION_BIAS_DOWN  2
-#define DIRECTION_BIAS_LEFT  3
-#define DIRECTION_BIAS_RIGHT 4
-
-#define AXIS_BIAS_NONE 0
-#define AXIS_BIAS_X    1
-#define AXIS_BIAS_Y    2
-
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
@@ -70,6 +48,28 @@ struct sFillData
 
 struct sGenerationData
 {
+    uint16_t wallWidth = 3;
+    uint16_t exitCount = 4;
+
+    float density = 0.6f;
+    uint16_t itterations = 2;
+
+    uint16_t roomMin_x = 11;
+    uint16_t roomMin_y = roomMin_x;
+    uint16_t roomMax_x = 15;
+    uint16_t roomMax_y = roomMax_x;
+
+    uint16_t directionBias_Threshold = 32;
+    uint16_t directionBias_none  = 0;
+    uint16_t directionBias_up    = 1;
+    uint16_t directionBias_down  = 2;
+    uint16_t directionBias_left  = 3;
+    uint16_t directionBias_right = 4;
+
+    uint16_t axisBias_none = 0;
+    uint16_t axisBias_x    = 1;
+    uint16_t axisBias_y    = 2;
+
     std::string version = RMG_VERSION;
     uint64_t seed = 0;
     uint16_t x = 100;
@@ -77,7 +77,8 @@ struct sGenerationData
     uint32_t mapSize = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
     eExporter exporter = eExporter::EF1;
-    std::string fileName = "default.txt";
+    std::string fileExport = "default.txt";
+    std::string fileSettings = "";
     eTile *tile = nullptr;
 //    eObject *object = nullptr;
 };
@@ -99,3 +100,4 @@ struct sRoom
 };
 
 #endif // MAPDATATYPES_HPP
+

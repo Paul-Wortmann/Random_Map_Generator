@@ -31,6 +31,8 @@
 //#include "map_generator_D1.hpp"
 #include "map_generator_D2.hpp"
 #include "map_generator_M1.hpp"
+#include "map_import_settings_file.hpp"
+#include "parse_command_line.hpp"
 
 class cMapGenerator
 {
@@ -41,6 +43,7 @@ class cMapGenerator
         cMapGenerator& operator=(const cMapGenerator& _other) {if (this == &_other) return *this; return *this;}
         void free(sGenerationData &_data);
         uint16_t generate(sGenerationData &_data);
+        void parseCommandLine(sGenerationData &_data, int _argc, char** _argv) {_parseCommandLine(_data, _argc, _argv); mapImportSettings(_data.fileSettings, _data);}
     protected:
     private:
 };

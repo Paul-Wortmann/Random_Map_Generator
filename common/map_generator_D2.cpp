@@ -29,14 +29,14 @@ void mapGenerator_D2(sGenerationData &_data)
     _data.tile = new eTile[_data.mapSize];
     for (uint32_t i = 0; i < _data.mapSize; i++)
         _data.tile[i] = eTile::WALL;
-    uint32_t max_r = (uint32_t)sqrt((float)(ROOM_MAX_X*ROOM_MAX_X)+(ROOM_MAX_Y*ROOM_MAX_Y));
-    uint32_t max_rooms = (_data.mapSize) / (ROOM_MIN_X*ROOM_MIN_Y);
+    uint32_t max_r = (uint32_t)sqrt((float)(_data.roomMax_x*_data.roomMax_x)+(_data.roomMax_y*_data.roomMax_y));
+    uint32_t max_rooms = (_data.mapSize) / (_data.roomMin_x*_data.roomMin_y);
     sRoom* room = new sRoom[max_rooms];
     for (uint32_t i = 0; i < max_rooms; i++)
     {
         room[i].valid = true;
-        room[i].w = ROOM_MIN_X + rand() % (ROOM_MAX_X-ROOM_MIN_X);
-        room[i].h = ROOM_MIN_Y + rand() % (ROOM_MAX_Y-ROOM_MIN_Y);
+        room[i].w = _data.roomMin_x + rand() % (_data.roomMax_x-_data.roomMin_x);
+        room[i].h = _data.roomMin_y + rand() % (_data.roomMax_y-_data.roomMin_y);
         room[i].x = (room[i].w/2) + rand() % (uint32_t)(_data.x - room[i].w)-2;
         room[i].y = (room[i].h/2) + rand() % (uint32_t)(_data.y - room[i].h)-2;
     }

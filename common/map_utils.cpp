@@ -26,7 +26,7 @@
 void mapCheck(sGenerationData &_data)
 {
     uint32_t mapTile = 0;
-    for (uint16_t k = 0; k < ITTERATIONS; k++)
+    for (uint16_t k = 0; k < _data.itterations; k++)
     {
         for (uint16_t i = 1; i < _data.y-1; i++)
         {

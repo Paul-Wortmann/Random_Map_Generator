@@ -26,7 +26,7 @@
 void mapExport_Debug(const sGenerationData &_data)
 {
     bool graphicalOutput = true;
-    std::ofstream t_fstream(_data.fileName.c_str(), std::ifstream::out);
+    std::ofstream t_fstream(_data.fileExport.c_str(), std::ifstream::out);
     t_fstream << "[ Version - " << _data.version << " ]" << std::endl;
     t_fstream << "[ Seed - " << _data.seed << " ]" << std::endl;
     t_fstream << "[ Dimensions - x: " << _data.x << " - y: " << _data.y << " ]" << std::endl;
