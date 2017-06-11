@@ -27,10 +27,11 @@ bool isWallTile(sGenerationData &_data, uint32_t _tile)
 {
     uint16_t x = _tile % _data.x;
     uint16_t y = _tile / _data.x;
-    if (x >= 0 && y >= 0 && x < _data.x && y < _data.y && _data.tile[_tile] != eTile::WALL)
+    if (x < _data.x && y < _data.y && _data.tile[_tile] != eTile::WALL)
         return false;
     return true;
 }
+
 bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bias)
 {
     uint16_t tile_x = _tile % _data.x;

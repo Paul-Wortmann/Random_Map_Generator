@@ -38,12 +38,36 @@
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
+enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
 //enum eObject    : uint16_t { NONE = 0, EXIT = 1, CHEST = 2 };
+
+struct sRoomGenData
+{
+    eDirection direction = eDirection::NONE;
+    bool end_node = false;
+    uint16_t sx = 0; // start x
+    uint16_t ex = 0; // end x
+    uint16_t sy = 0; // start y
+    uint16_t ey = 0; // end y
+    sRoomGenData *parent = nullptr;
+    sRoomGenData *left = nullptr;
+    sRoomGenData *right = nullptr;
+};
 
 struct sFillData
 {
     eTile tile = eTile::FLOOR;
     bool  *valid = nullptr;
+};
+
+struct sRoomData
+{
+    uint16_t ID = 0;
+    bool valid = false;
+    uint32_t position = 0;
+    uint16_t w = 0;
+    uint16_t h = 0;
+    bool connection[4] = {false};
 };
 
 struct sGenerationData
@@ -72,13 +96,15 @@ struct sGenerationData
 
     std::string version = RMG_VERSION;
     uint64_t seed = 0;
-    uint16_t x = 100;
-    uint16_t y = 100;
+    uint16_t x = 50;
+    uint16_t y = 50;
     uint32_t mapSize = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
     eExporter exporter = eExporter::EF1;
     std::string fileExport = "default.txt";
     std::string fileSettings = "";
+    uint16_t roomCount = 0;
+    sRoomData *room = nullptr;
     eTile *tile = nullptr;
 //    eObject *object = nullptr;
 };

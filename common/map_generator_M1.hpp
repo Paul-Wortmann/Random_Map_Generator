@@ -28,6 +28,11 @@
 #include "map_floodfill.hpp"
 #include "map_utils.hpp"
 
+bool isWallTile(sGenerationData &_data, uint32_t _tile);
+bool map_gen_maze_check_tile(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bias);
+void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bias);
+bool add_room(sGenerationData &_data, sRoom &_room);
+bool connect_room(sGenerationData &_data, sRoom &_room);
 void mapGenerator_M1(sGenerationData &_data);
 
 #endif // MAPGENERATOR_M1_HPP

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 Paul Wortmann, PhysHex Games, www.physhexgames.com
+ * Copyright (C) Paul Wortmann, PhysHex Games, www.physhexgames.com
  * This file is part of "Random 2D Map Generator"
  *
  * "Random 2D Map Generator" is free software: you can redistribute it and/or modify
@@ -21,34 +21,16 @@
  * @date 2017-06-05
  */
 
-#include "map_import_settings_file.hpp"
+#ifndef MAPGENERATOR_D1_1_HPP
+#define MAPGENERATOR_D1_1_HPP
 
-void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
-{
-    //if (_fileName.length() <= 2);
+#include "map_data_types.hpp"
+#include "map_floodfill.hpp"
+#include "map_utils.hpp"
 
-    _data.algorithm = eAlgorithm::AD1;
-    _data.exporter = eExporter::ED1;
-}
+uint16_t mapGenerator_D1_1_build_subrooms(sRoomGenData *_room, sGenerationData &_data);
+void mapGenerator_D1_1_genRooms(sRoomGenData *_room, sGenerationData &_data);
+void mapGenerator_D1_1_genRoomTileData(sGenerationData &_data);
+void mapGenerator_D1_1(sGenerationData &_data);
 
-
-
-
-/* possible Command line arguments to implement
-
--s fileName
--e fileName
-
---version
--v
---width (minimum 10)
--w
---height (minimum 10)
--h
---algorithm
--a
---filename
--f
---export
--e
-*/
+#endif // MAPGENERATOR_D1_1_HPP

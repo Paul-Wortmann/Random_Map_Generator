@@ -30,6 +30,11 @@ void cMapGenerator::free(sGenerationData &_data)
         delete [] _data.tile;
         _data.tile = nullptr;
     }
+    if (_data.room != nullptr)
+    {
+        delete [] _data.room;
+        _data.room = nullptr;
+    }
 }
 
 uint16_t cMapGenerator::generate(sGenerationData &_data)
@@ -47,7 +52,7 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
                 mapGenerator_C1(_data);
             break;
             case eAlgorithm::AD1:
-                //mapGenerator_D1(_data);
+                mapGenerator_D1_1(_data);
             break;
             case eAlgorithm::AD2:
                 mapGenerator_D2(_data);
