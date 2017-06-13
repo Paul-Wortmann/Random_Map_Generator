@@ -23,7 +23,7 @@
 
 #include "map_generator_D1.hpp"
 
-uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_data)
+uint16_t mapGenerator_D1_build_subrooms(sRoomGenData *_room, sGenerationData &_data)
 {
     if ((_room->ex > _data.x) || (_room->ey > _data.y))
     {
@@ -49,7 +49,7 @@ uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_
             _room->left->ey = _room->ey;
             _room->left->parent = _room;
             _room->left->direction = eDirection::LEFT;
-            room_count += mapGenerator_D1__build_subrooms(_room->left, _data);
+            room_count += mapGenerator_D1_build_subrooms(_room->left, _data);
         }
         if (_data.error == eError::NONE)
         {
@@ -60,7 +60,7 @@ uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_
             _room->right->ey = _room->ey;
             _room->right->parent = _room;
             _room->right->direction = eDirection::RIGHT;
-            room_count += mapGenerator_D1__build_subrooms(_room->right, _data);
+            room_count += mapGenerator_D1_build_subrooms(_room->right, _data);
         }
     }
     if (split_y)
@@ -75,7 +75,7 @@ uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_
             _room->left->ey = _room->left->sy+split_pos;
             _room->left->parent = _room;
             _room->left->direction = eDirection::LEFT;
-            room_count += mapGenerator_D1__build_subrooms(_room->left, _data);
+            room_count += mapGenerator_D1_build_subrooms(_room->left, _data);
         }
         if (_data.error == eError::NONE)
         {
@@ -86,7 +86,7 @@ uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_
             _room->right->ey = _room->ey;
             _room->right->parent = _room;
             _room->right->direction = eDirection::RIGHT;
-            room_count += mapGenerator_D1__build_subrooms(_room->right, _data);
+            room_count += mapGenerator_D1_build_subrooms(_room->right, _data);
         }
     }
     if ((!split_x) && (!split_y))
@@ -97,7 +97,7 @@ uint16_t mapGenerator_D1__build_subrooms(sRoomGenData *_room, sGenerationData &_
     return room_count;
 }
 
-void mapGenerator_D1__genRooms(sRoomGenData *_room, sGenerationData &_data)
+void mapGenerator_D1_genRooms(sRoomGenData *_room, sGenerationData &_data)
 {
     bool debug = false;
     uint16_t room_ID = 0;
@@ -143,7 +143,7 @@ void mapGenerator_D1__genRooms(sRoomGenData *_room, sGenerationData &_data)
      }
 }
 
-void mapGenerator_D1__genRoomTileData(sGenerationData &_data)
+void mapGenerator_D1_genRoomTileData(sGenerationData &_data)
 {
     for (uint16_t i = 0; i < _data.roomCount; i++)
     {
@@ -161,7 +161,7 @@ void mapGenerator_D1__genRoomTileData(sGenerationData &_data)
     }
 }
 
-int16_t mapGenerator_D1__tilesRoom(sGenerationData &_data, uint32_t _tile)
+int16_t mapGenerator_D1_tilesRoom(sGenerationData &_data, uint32_t _tile)
 {
     if (_tile >= _data.mapSize)
         return -1;
@@ -181,7 +181,7 @@ int16_t mapGenerator_D1__tilesRoom(sGenerationData &_data, uint32_t _tile)
     }
 }
 
-void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
+void mapGenerator_D1_findNeighborRooms(sGenerationData &_data)
 {
     for (uint16_t i = 0; i < _data.roomCount; i++)
     {
@@ -189,7 +189,7 @@ void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
         uint16_t pos_y = _data.room[i].position / _data.y;
         for (uint16_t j = pos_x; j < _data.x; j++)
         {
-            int16_t tile_r2 = mapGenerator_D1__tilesRoom(_data, (pos_y * _data.x) + j);
+            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (pos_y * _data.x) + j);
             if ((tile_r2 >= 0) && (tile_r2 != i))
             {
                 _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
@@ -201,7 +201,7 @@ void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
         }
         for (int16_t j = pos_x; j >= 0; j--)
         {
-            int16_t tile_r2 = mapGenerator_D1__tilesRoom(_data, (pos_y * _data.x) + j);
+            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (pos_y * _data.x) + j);
             if ((tile_r2 >= 0) && (tile_r2 != i))
             {
                 _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
@@ -213,7 +213,7 @@ void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
         }
         for (uint16_t j = pos_y; j < _data.y; j++)
         {
-            int16_t tile_r2 = mapGenerator_D1__tilesRoom(_data, (j * _data.x) + pos_x);
+            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (j * _data.x) + pos_x);
             if ((tile_r2 >= 0) && (tile_r2 != i))
             {
                 _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
@@ -225,7 +225,7 @@ void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
         }
         for (int16_t j = pos_y; j >= 0; j--)
         {
-            int16_t tile_r2 = mapGenerator_D1__tilesRoom(_data, (j * _data.x) + pos_x);
+            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (j * _data.x) + pos_x);
             if ((tile_r2 >= 0) && (tile_r2 != i))
             {
                 _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
@@ -238,9 +238,9 @@ void mapGenerator_D1__findNeighborRooms(sGenerationData &_data)
     }
 }
 
-void mapGenerator_D1__connectRooms(sGenerationData &_data)
+void mapGenerator_D1_connectRooms(sGenerationData &_data)
 {
-    mapGenerator_D1__findNeighborRooms(_data);
+    mapGenerator_D1_findNeighborRooms(_data);
     for (uint16_t i = 0; i < _data.roomCount; i++)
     {
         for (uint16_t j = 0; j < _data.room[i].connectionCount; j++)
@@ -279,9 +279,9 @@ void mapGenerator_D1(sGenerationData &_data)
     room->sy = 0;
     room->ey = _data.y-1;
     room->end_node = false;
-    _data.roomCount = mapGenerator_D1__build_subrooms(room, _data);
-    mapGenerator_D1__genRooms(room, _data);
+    _data.roomCount = mapGenerator_D1_build_subrooms(room, _data);
+    mapGenerator_D1_genRooms(room, _data);
     delete room;
-    mapGenerator_D1__genRoomTileData(_data);
-    mapGenerator_D1__connectRooms(_data);
+    mapGenerator_D1_genRoomTileData(_data);
+    mapGenerator_D1_connectRooms(_data);
 }
