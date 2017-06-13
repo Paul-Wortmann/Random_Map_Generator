@@ -35,10 +35,12 @@
 
 #define RMG_VERSION "0.0.1"
 
+enum class eError     : uint16_t { NONE = 0, ALGORITHM = 1 };
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
+
 //enum eObject    : uint16_t { NONE = 0, EXIT = 1, CHEST = 2 };
 
 struct sRoomGenData
@@ -60,6 +62,12 @@ struct sFillData
     bool  *valid = nullptr;
 };
 
+struct sRoomID
+{
+    int16_t ID = -1;
+    eDirection direction = eDirection::NONE;
+};
+
 struct sRoomData
 {
     uint16_t ID = 0;
@@ -67,7 +75,8 @@ struct sRoomData
     uint32_t position = 0;
     uint16_t w = 0;
     uint16_t h = 0;
-    bool connection[4] = {false};
+    uint16_t connectionCount = 0;
+    sRoomID connection[4] = {};
 };
 
 struct sGenerationData
@@ -82,6 +91,7 @@ struct sGenerationData
     uint16_t roomMin_y = roomMin_x;
     uint16_t roomMax_x = 15;
     uint16_t roomMax_y = roomMax_x;
+    const uint16_t roomMaxConnections = 4;
 
     uint16_t directionBias_Threshold = 32;
     uint16_t directionBias_none  = 0;
@@ -94,10 +104,12 @@ struct sGenerationData
     uint16_t axisBias_x    = 1;
     uint16_t axisBias_y    = 2;
 
+    eError error = eError::NONE;
+
     std::string version = RMG_VERSION;
     uint64_t seed = 0;
-    uint16_t x = 50;
-    uint16_t y = 50;
+    uint16_t x = 100;
+    uint16_t y = 100;
     uint32_t mapSize = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
     eExporter exporter = eExporter::EF1;
