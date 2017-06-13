@@ -1,0 +1,20 @@
+language: cpp
+compiler:
+  - gcc
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq --force-yes cppcheck
+script: cmake . && make
+after_script: cppcheck --verbose --enable=all --std=posix --std=c++11 --quiet `git ls-files \*.cpp`
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#www.PhysHexGames.com"
+    on_success: always
+    on_failure: always
+    template:
+      - "Commit : %{commit_message}"
+      - "%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
+      - "Change view : %{compare_url}"
+      - "Build details : %{build_url}"
+      
