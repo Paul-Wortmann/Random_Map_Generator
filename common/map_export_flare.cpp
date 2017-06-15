@@ -25,5 +25,6 @@
 
 void mapExport_Flare(const sGenerationData &_data)
 {
-
+    if (_data.exporter == eExporter::EF1)
+        std::cout << "exporter not yet implemented" << std::endl;
 }

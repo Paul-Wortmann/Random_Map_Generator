@@ -28,6 +28,12 @@
 #include "map_floodfill.hpp"
 #include "map_utils.hpp"
 
+uint16_t mapGenerator_D1_build_subrooms(sRoomGenData *_room, sGenerationData &_data);
+void mapGenerator_D1_genRooms(sRoomGenData *_room, sGenerationData &_data);
+void mapGenerator_D1_genRoomTileData(sGenerationData &_data);
+int16_t mapGenerator_D1_tilesRoom(sGenerationData &_data, uint32_t _tile);
+void mapGenerator_D1_findNeighborRooms(sGenerationData &_data);
+void mapGenerator_D1_connectRooms(sGenerationData &_data);
 void mapGenerator_D1(sGenerationData &_data);
 
 #endif // MAPGENERATOR_D1_HPP

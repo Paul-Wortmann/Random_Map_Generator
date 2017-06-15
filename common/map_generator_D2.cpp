@@ -35,10 +35,10 @@ void mapGenerator_D2(sGenerationData &_data)
     for (uint32_t i = 0; i < max_rooms; i++)
     {
         room[i].valid = true;
-        room[i].w = _data.roomMin_x + rand() % (_data.roomMax_x-_data.roomMin_x);
-        room[i].h = _data.roomMin_y + rand() % (_data.roomMax_y-_data.roomMin_y);
-        room[i].x = (room[i].w/2) + rand() % (uint32_t)(_data.x - room[i].w)-2;
-        room[i].y = (room[i].h/2) + rand() % (uint32_t)(_data.y - room[i].h)-2;
+        room[i].w = _data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x-_data.roomMin_x);
+        room[i].h = _data.roomMin_y + _data.rmg_rand() % (_data.roomMax_y-_data.roomMin_y);
+        room[i].x = (room[i].w/2) + _data.rmg_rand() % (uint32_t)(_data.x - room[i].w)-2;
+        room[i].y = (room[i].h/2) + _data.rmg_rand() % (uint32_t)(_data.y - room[i].h)-2;
     }
     for (uint32_t i = 0; i < max_rooms; i++)
     {
@@ -72,9 +72,9 @@ void mapGenerator_D2(sGenerationData &_data)
         {
             for (uint32_t j = 0; j < max_rooms; j++)
             {
+                bool path_found = false;
                 if ((room[j].valid)&&(i != j))
                 {
-                    bool path_found = false;
                     if (!path_found)
                     {
                         eTile previous_tile = eTile::FLOOR;

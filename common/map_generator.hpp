@@ -30,6 +30,7 @@
 #include "map_generator_C1.hpp"
 #include "map_generator_D1.hpp"
 #include "map_generator_D2.hpp"
+#include "map_generator_D3.hpp"
 #include "map_generator_M1.hpp"
 #include "map_import_settings_file.hpp"
 #include "parse_command_line.hpp"

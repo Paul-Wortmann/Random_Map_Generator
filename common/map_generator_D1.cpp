@@ -36,10 +36,10 @@ uint16_t mapGenerator_D1_build_subrooms(sRoomGenData *_room, sGenerationData &_d
     bool split_x = (size_x > ((_data.roomMax_x * 2.125f) + _data.wallWidth));
     bool split_y = (size_y > ((_data.roomMax_y * 2.125f) + _data.wallWidth));
     if ((split_x) && (split_y))
-        ((rand() % 100) > 50) ? split_x = false : split_y = false;
+        ((_data.rmg_rand() % 100) > 50) ? split_x = false : split_y = false;
     if (split_x)
     {
-        uint16_t split_pos = (rand() % (size_x - (_data.roomMin_x * 2))) + _data.roomMin_x;
+        uint16_t split_pos = (_data.rmg_rand() % (size_x - (_data.roomMin_x * 2))) + _data.roomMin_x;
         if (_data.error == eError::NONE)
         {
             _room->left = new sRoomGenData;
@@ -65,7 +65,7 @@ uint16_t mapGenerator_D1_build_subrooms(sRoomGenData *_room, sGenerationData &_d
     }
     if (split_y)
     {
-        uint16_t split_pos = (rand() % (size_y - (_data.roomMin_y * 2))) + _data.roomMin_y;
+        uint16_t split_pos = (_data.rmg_rand() % (size_y - (_data.roomMin_y * 2))) + _data.roomMin_y;
         if (_data.error == eError::NONE)
         {
             _room->left = new sRoomGenData;
@@ -99,7 +99,6 @@ uint16_t mapGenerator_D1_build_subrooms(sRoomGenData *_room, sGenerationData &_d
 
 void mapGenerator_D1_genRooms(sRoomGenData *_room, sGenerationData &_data)
 {
-    bool debug = false;
     uint16_t room_ID = 0;
     bool done = false;
     _data.room = new sRoomData[_data.roomCount];
@@ -151,11 +150,11 @@ void mapGenerator_D1_genRoomTileData(sGenerationData &_data)
         uint16_t ex = sx + _data.room[i].w -1;
         uint16_t sy = (_data.room[i].position / _data.x) - (_data.room[i].h / 2) +1;
         uint16_t ey = sy + _data.room[i].h -1;
-        for (uint16_t i = sx; i < ex; i++)
+        for (uint16_t j = sx; j < ex; j++)
         {
-            for (uint16_t j = sy; j < ey; j++)
+            for (uint16_t k = sy; k < ey; k++)
             {
-                _data.tile[(j * _data.x) + i] = eTile::FLOOR;
+                _data.tile[(k * _data.x) + j] = eTile::FLOOR;
             }
         }
     }
@@ -179,6 +178,7 @@ int16_t mapGenerator_D1_tilesRoom(sGenerationData &_data, uint32_t _tile)
             && (tile_y <= (room_y + (_data.room[i].h/2))))
             return i;
     }
+    return -1;
 }
 
 void mapGenerator_D1_findNeighborRooms(sGenerationData &_data)

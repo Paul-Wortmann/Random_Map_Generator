@@ -141,10 +141,10 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
         bool tile_left_ok = map_gen_maze_check_tile(_data, tile_left, _data.directionBias_left);
         if (tile_left_ok) tiles_available++;
 
-        if ((new__direction_bias) || (_direction_bias == _data.directionBias_none)) tile_direction = (rand() % 4) + 1;
+        if ((new__direction_bias) || (_direction_bias == _data.directionBias_none)) tile_direction = (_data.rmg_rand() % 4) + 1;
         else
         {
-            tile_direction = (rand()%(4+_data.directionBias_Threshold))+1;
+            tile_direction = (_data.rmg_rand()%(4+_data.directionBias_Threshold))+1;
             if (tile_direction > 4) tile_direction = _direction_bias;
             else
             {
@@ -196,10 +196,10 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
 bool add_room(sGenerationData &_data, sRoom &_room)
 {
 
-    _room.x = _data.roomMax_x + rand() % (_data.x - (_data.roomMax_x*2));
-    _room.y = _data.roomMax_y + rand() % (_data.y - (_data.roomMax_y*2));
-    _room.w = _data.roomMin_x + rand() % (_data.roomMax_x - _data.roomMin_x);
-    _room.h = _data.roomMin_y + rand() % (_data.roomMax_y - _data.roomMin_y);
+    _room.x = _data.roomMax_x + _data.rmg_rand() % (_data.x - (_data.roomMax_x*2));
+    _room.y = _data.roomMax_y + _data.rmg_rand() % (_data.y - (_data.roomMax_y*2));
+    _room.w = _data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x - _data.roomMin_x);
+    _room.h = _data.roomMin_y + _data.rmg_rand() % (_data.roomMax_y - _data.roomMin_y);
     for (uint16_t i = _room.y-1-(uint16_t)_room.h/2.0f; i < _room.y+1+(uint16_t)_room.h/2.0f; i++)
     {
         for (uint16_t j = _room.x-1-(uint16_t)_room.w/2.0f; j < _room.x+1+(uint16_t)_room.w/2.0f; j++)
@@ -221,8 +221,7 @@ bool add_room(sGenerationData &_data, sRoom &_room)
 bool connect_room(sGenerationData &_data, sRoom &_room)
 {
     uint16_t direction_axis = (abs(_room.x - _data.x) > abs(_room.y - _data.y)) ? _data.axisBias_x : _data.axisBias_y;
-    uint16_t direction_bias = _data.directionBias_none;
-    direction_bias = (direction_axis == _data.axisBias_x) ? ((_room.x > _data.x/2) ? _data.directionBias_right : _data.directionBias_left) : ((_room.y > _data.y/2) ? _data.directionBias_down : _data.directionBias_up);
+    uint16_t direction_bias = (direction_axis == _data.axisBias_x) ? ((_room.x > _data.x/2) ? _data.directionBias_right : _data.directionBias_left) : ((_room.y > _data.y/2) ? _data.directionBias_down : _data.directionBias_up);
     bool foundWall = false;
     bool pathFound = false;
     uint32_t pathPos = (_room.y * _data.x) + _room.x;
@@ -249,7 +248,7 @@ void mapGenerator_M1(sGenerationData &_data)
     _data.tile = new eTile[mapSize];
     for (uint32_t i = 0; i < _data.mapSize; i++)
         _data.tile[i] = eTile::WALL;
-    uint16_t no_of_rooms = 2+ rand() % 4;
+    uint16_t no_of_rooms = 2+ _data.rmg_rand() % 4;
     sRoom *room = new sRoom[no_of_rooms];
     for (uint16_t i = 0; i < no_of_rooms; i++)
         while (!add_room(_data, room[i]));

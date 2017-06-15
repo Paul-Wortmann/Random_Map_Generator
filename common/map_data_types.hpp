@@ -27,16 +27,17 @@
 
 #include <cstdint>
 #include <cstdlib>
-#include <ctime>
-#include <cmath>
+#include <chrono>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <random>
 
 #define RMG_VERSION "0.0.1"
 
 enum class eError     : uint16_t { NONE = 0, ALGORITHM = 1 };
-enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AM1 = 3 };
+enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AD3 = 3, AM1 = 4 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
@@ -81,10 +82,20 @@ struct sRoomData
 
 struct sGenerationData
 {
+    sGenerationData(void) {};
+    ~sGenerationData(void) = default;
+    sGenerationData(const sGenerationData&) = default;
+    sGenerationData& operator=(const sGenerationData& _data) {if (this == &_data) return *this; return *this;};
+
+    uint64_t rmg_rand(void) {return rand();};
+    void rmg_rseed(uint64_t _seed) {srand(_seed);};
+    //std::mt19937 rand;
+
+
     uint16_t wallWidth = 3;
     uint16_t exitCount = 4;
 
-    float density = 0.6f;
+    float density = 0.625f;
     uint16_t itterations = 2;
 
     uint16_t roomMin_x = 11;
@@ -94,15 +105,15 @@ struct sGenerationData
     const uint16_t roomMaxConnections = 4;
 
     uint16_t directionBias_Threshold = 32;
-    uint16_t directionBias_none  = 0;
-    uint16_t directionBias_up    = 1;
-    uint16_t directionBias_down  = 2;
-    uint16_t directionBias_left  = 3;
-    uint16_t directionBias_right = 4;
+    const uint16_t directionBias_none  = 0;
+    const uint16_t directionBias_up    = 1;
+    const uint16_t directionBias_down  = 2;
+    const uint16_t directionBias_left  = 3;
+    const uint16_t directionBias_right = 4;
 
-    uint16_t axisBias_none = 0;
-    uint16_t axisBias_x    = 1;
-    uint16_t axisBias_y    = 2;
+    const uint16_t axisBias_none = 0;
+    const uint16_t axisBias_x    = 1;
+    const uint16_t axisBias_y    = 2;
 
     eError error = eError::NONE;
 
@@ -112,9 +123,9 @@ struct sGenerationData
     uint16_t y = 100;
     uint32_t mapSize = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
-    eExporter exporter = eExporter::EF1;
+    eExporter exporter = eExporter::ED1;
     std::string fileExport = "default.txt";
-    std::string fileSettings = "";
+    std::string fileSettings = "settings.txt";
     uint16_t roomCount = 0;
     sRoomData *room = nullptr;
     eTile *tile = nullptr;

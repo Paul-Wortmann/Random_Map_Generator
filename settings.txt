@@ -1,12 +1,15 @@
+# Random Map Generator. Copyright (C) 2017 Paul Wortmann, PhysHex Games, www.physhexgames.com
 
+# 'map_seed' = 'uint64_t' if map seed is 0, a new random seed will be generated.
+# 'map_width' a value greater than 10 and less than 1001.
+# 'map_height' a value greater than 10 and less than 1001.
+# 'map_algorithm' currently supported: 'AC1' 'AM1' 'AD1' 'AD2' 'AD3'
+# 'map_exporter' the default is the debug exporter: 'ED1'
 
-
-
-<map_seed = 0/>
-<map_width = 100/>
-<map_height = 100/>
-<map_algorithm = M1/>
-<map_export = D1/>
-
-
-
+<map_settings>
+    <map_seed = 0/>
+    <map_width = 100/>
+    <map_height = 100/>
+    <map_algorithm = AD2/>
+    <map_exporter = ED1/>
+</map_settings>

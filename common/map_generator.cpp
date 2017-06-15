@@ -40,7 +40,7 @@ void cMapGenerator::free(sGenerationData &_data)
 uint16_t cMapGenerator::generate(sGenerationData &_data)
 {
     _data.seed = (_data.seed == 0) ? time(nullptr) : _data.seed;
-    srand(_data.seed);
+    _data.rmg_rseed(_data.seed);
     if ((_data.x < 10) || (_data.y < 10))
         return EXIT_FAILURE;
     else
@@ -56,6 +56,9 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
             break;
             case eAlgorithm::AD2:
                 mapGenerator_D2(_data);
+            break;
+            case eAlgorithm::AD3:
+                mapGenerator_D3(_data);
             break;
             case eAlgorithm::AM1:
                 mapGenerator_M1(_data);
