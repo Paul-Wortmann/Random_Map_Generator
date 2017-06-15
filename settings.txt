@@ -5,11 +5,30 @@
 # 'map_height' a value greater than 10 and less than 1001.
 # 'map_algorithm' currently supported: 'AC1' 'AM1' 'AD1' 'AD2' 'AD3'
 # 'map_exporter' the default is the debug exporter: 'ED1'
+# 'file_export' specify the file to export the map to. Default: "default.txt"
+# 'wall_Width' Used to specify the wall with for some algorithms.
+# 'cell_density' Map fill density, a float value of 0 - 1. 1 being 100%
+# 'itterations' Best left at the default value of: 2
+# 'room_min_x' Value of 3 to map_width / 2, Default: 11
+# 'room_min_y' Value of 3 to map_height / 2, Default: 11
+# 'room_max_x' Value of 3 to map_width / 2, Default: 15
+# 'room_max_y' Value of 3 to map_height / 2, Default: 15
 
 <map_settings>
+    <map_algorithm = AD2/>
+    <map_exporter = ED1/>
+    <file_export = default.txt/>
     <map_seed = 0/>
     <map_width = 100/>
     <map_height = 100/>
-    <map_algorithm = AD2/>
-    <map_exporter = ED1/>
+    <wall_Width = 3/>
+    <cell_density = 0.625/>
+    <iterations = 2/>
+    <room_min_x = 11/>
+    <room_min_y = 11/>
+    <room_max_x = 15/>
+    <room_max_y = 15/>
 </map_settings>
+
+
+

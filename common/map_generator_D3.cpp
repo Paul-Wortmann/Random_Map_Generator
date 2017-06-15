@@ -25,7 +25,7 @@
 
 void mapGenerator_D3_generateRooms(sGenerationData &_data)
 {
-    _data.roomCount = ((_data.x / _data.roomMax_x) * (_data.y / _data.roomMax_y)) / 2;
+    _data.roomCount = ((_data.x / _data.roomMax_x) * (_data.y / _data.roomMax_y)) / (uint16_t)2;
     //std::cout << "roomCount: " << ((_data.x / _data.roomMax_x) * (_data.y / _data.roomMax_y)) /2 << std::endl;
     uint16_t roomPlacementAttempts = 4;
     _data.room = new sRoomData[_data.roomCount];

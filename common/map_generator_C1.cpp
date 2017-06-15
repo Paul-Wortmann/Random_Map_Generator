@@ -36,7 +36,7 @@ void mapGenerator_C1(sGenerationData &_data)
     for(int i = -1; i < 2; i++)
         for(int j = -1; j < 2; j++)
             _data.tile[(((_data.y / 2) + i) * _data.x) + ((_data.x / 2) + j)] = eTile::FLOOR;
-    for (uint16_t itteration = 0; itteration < _data.itterations; itteration++)
+    for (uint16_t iteration = 0; iteration < _data.iterations; iteration++)
     {
         for (uint16_t i = 1; i < _data.x-1; i++)
         {

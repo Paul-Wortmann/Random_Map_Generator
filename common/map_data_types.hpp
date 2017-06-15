@@ -88,7 +88,7 @@ struct sGenerationData
     sGenerationData& operator=(const sGenerationData& _data) {if (this == &_data) return *this; return *this;};
 
     uint64_t rmg_rand(void) {return rand();};
-    void rmg_rseed(uint64_t _seed) {srand(_seed);};
+    void rmg_rseed(uint64_t _seed) {srand((uint32_t)_seed);};
     //std::mt19937 rand;
 
 
@@ -96,7 +96,7 @@ struct sGenerationData
     uint16_t exitCount = 4;
 
     float density = 0.625f;
-    uint16_t itterations = 2;
+    uint16_t iterations = 2;
 
     uint16_t roomMin_x = 11;
     uint16_t roomMin_y = roomMin_x;
