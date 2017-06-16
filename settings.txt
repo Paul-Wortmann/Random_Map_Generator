@@ -8,7 +8,7 @@
 # 'file_export' specify the file to export the map to. Default: "default.txt"
 # 'wall_Width' Used to specify the wall with for some algorithms.
 # 'cell_density' Map fill density, a float value of 0 - 1. 1 being 100%
-# 'itterations' Best left at the default value of: 2
+# 'iterations' Best left at the default value of: 2
 # 'room_min_x' Value of 3 to map_width / 2, Default: 11
 # 'room_min_y' Value of 3 to map_height / 2, Default: 11
 # 'room_max_x' Value of 3 to map_width / 2, Default: 15
