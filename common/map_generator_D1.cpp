@@ -160,113 +160,6 @@ void mapGenerator_D1_genRoomTileData(sGenerationData &_data)
     }
 }
 
-int16_t mapGenerator_D1_tilesRoom(sGenerationData &_data, uint32_t _tile)
-{
-    if (_tile >= _data.mapSize)
-        return -1;
-    if (_data.tile[_tile] != eTile::FLOOR)
-        return -1;
-    for (uint16_t i = 0; i < _data.roomCount; i++)
-    {
-        uint16_t tile_x = _tile % _data.x;
-        uint16_t tile_y = _tile / _data.x;
-        uint16_t room_x = _data.room[i].position % _data.x;
-        uint16_t room_y = _data.room[i].position / _data.x;
-        if    ((tile_x >= (room_x - (_data.room[i].w/2)))
-            && (tile_x <= (room_x + (_data.room[i].w/2)))
-            && (tile_y >= (room_y - (_data.room[i].h/2)))
-            && (tile_y <= (room_y + (_data.room[i].h/2))))
-            return i;
-    }
-    return -1;
-}
-
-void mapGenerator_D1_findNeighborRooms(sGenerationData &_data)
-{
-    for (uint16_t i = 0; i < _data.roomCount; i++)
-    {
-        uint16_t pos_x = _data.room[i].position % _data.x;
-        uint16_t pos_y = _data.room[i].position / _data.y;
-        for (uint16_t j = pos_x; j < _data.x; j++)
-        {
-            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (pos_y * _data.x) + j);
-            if ((tile_r2 >= 0) && (tile_r2 != i))
-            {
-                _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
-                _data.room[i].connection[_data.room[i].connectionCount].direction = eDirection::RIGHT;
-                if (_data.room[i].connectionCount < _data.roomMaxConnections)
-                    _data.room[i].connectionCount++;
-                 j = _data.x;
-            }
-        }
-        for (int16_t j = pos_x; j >= 0; j--)
-        {
-            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (pos_y * _data.x) + j);
-            if ((tile_r2 >= 0) && (tile_r2 != i))
-            {
-                _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
-                _data.room[i].connection[_data.room[i].connectionCount].direction = eDirection::LEFT;
-                if (_data.room[i].connectionCount < _data.roomMaxConnections)
-                    _data.room[i].connectionCount++;
-                j = -1;
-            }
-        }
-        for (uint16_t j = pos_y; j < _data.y; j++)
-        {
-            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (j * _data.x) + pos_x);
-            if ((tile_r2 >= 0) && (tile_r2 != i))
-            {
-                _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
-                _data.room[i].connection[_data.room[i].connectionCount].direction = eDirection::DOWN;
-                if (_data.room[i].connectionCount < _data.roomMaxConnections)
-                    _data.room[i].connectionCount++;
-                 j = _data.y;
-            }
-        }
-        for (int16_t j = pos_y; j >= 0; j--)
-        {
-            int16_t tile_r2 = mapGenerator_D1_tilesRoom(_data, (j * _data.x) + pos_x);
-            if ((tile_r2 >= 0) && (tile_r2 != i))
-            {
-                _data.room[i].connection[_data.room[i].connectionCount].ID = tile_r2;
-                _data.room[i].connection[_data.room[i].connectionCount].direction = eDirection::UP;
-                if (_data.room[i].connectionCount < _data.roomMaxConnections)
-                    _data.room[i].connectionCount++;
-                j = -1;
-            }
-        }
-    }
-}
-
-void mapGenerator_D1_connectRooms(sGenerationData &_data)
-{
-    mapGenerator_D1_findNeighborRooms(_data);
-    for (uint16_t i = 0; i < _data.roomCount; i++)
-    {
-        for (uint16_t j = 0; j < _data.room[i].connectionCount; j++)
-        {
-            uint16_t r1_x = _data.room[i].position % _data.x;
-            uint16_t r1_y = _data.room[i].position / _data.y;
-            uint16_t r2_x = _data.room[j].position % _data.x;
-            uint16_t r2_y = _data.room[j].position / _data.y;
-            if ((_data.room[i].connection[j].direction == eDirection::UP) || (_data.room[i].connection[j].direction == eDirection::DOWN))
-                for (uint16_t k = ((r1_y < r2_y) ? r1_y : r2_y); k < ((r1_y > r2_y) ? r1_y : r2_y); k++)
-                {
-                    uint32_t tile = (k * _data.x) + r1_x;
-                    if (tile < _data.mapSize)
-                        _data.tile[tile] = eTile::FLOOR;
-                }
-            if ((_data.room[i].connection[j].direction == eDirection::LEFT) || (_data.room[i].connection[j].direction == eDirection::RIGHT))
-                for (uint16_t k = ((r1_x < r2_x) ? r1_x : r2_x); k < ((r1_x > r2_x) ? r1_x : r2_x); k++)
-                {
-                    uint32_t tile = (r1_y * _data.x) + k;
-                    if (tile < _data.mapSize)
-                        _data.tile[tile] = eTile::FLOOR;
-                }
-        }
-    }
-}
-
 void mapGenerator_D1(sGenerationData &_data)
 {
     _data.mapSize = _data.x * _data.y;
@@ -283,5 +176,5 @@ void mapGenerator_D1(sGenerationData &_data)
     mapGenerator_D1_genRooms(room, _data);
     delete room;
     mapGenerator_D1_genRoomTileData(_data);
-    mapGenerator_D1_connectRooms(_data);
+    mapGenerator_connectRooms_direct(_data);
 }

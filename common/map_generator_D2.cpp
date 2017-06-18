@@ -23,152 +23,57 @@
 
 #include "map_generator_D2.hpp"
 
-void mapGenerator_D2(sGenerationData &_data)
+void mapGenerator_D2_generateRooms(sGenerationData &_data)
 {
-    _data.mapSize = _data.x * _data.y;
-    _data.tile = new eTile[_data.mapSize];
-    for (uint32_t i = 0; i < _data.mapSize; i++)
-        _data.tile[i] = eTile::WALL;
     uint32_t max_r = (uint32_t)sqrt((float)(_data.roomMax_x*_data.roomMax_x)+(_data.roomMax_y*_data.roomMax_y));
-    uint32_t max_rooms = (_data.mapSize) / (_data.roomMin_x*_data.roomMin_y);
-    sRoom* room = new sRoom[max_rooms];
-    for (uint32_t i = 0; i < max_rooms; i++)
+    _data.roomCount = (_data.mapSize) / (_data.roomMin_x*_data.roomMin_y);
+    _data.room = new sRoomData[_data.roomCount];
+    for (uint32_t i = 0; i < _data.roomCount; i++)
     {
-        room[i].valid = true;
-        room[i].w = _data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x-_data.roomMin_x);
-        room[i].h = _data.roomMin_y + _data.rmg_rand() % (_data.roomMax_y-_data.roomMin_y);
-        room[i].x = (room[i].w/2) + _data.rmg_rand() % (uint32_t)(_data.x - room[i].w)-2;
-        room[i].y = (room[i].h/2) + _data.rmg_rand() % (uint32_t)(_data.y - room[i].h)-2;
+        _data.room[i].valid = true;
+        _data.room[i].w = _data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x-_data.roomMin_x);
+        _data.room[i].h = _data.roomMin_y + _data.rmg_rand() % (_data.roomMax_y-_data.roomMin_y);
+        uint16_t t_x = (_data.room[i].w/2) + _data.rmg_rand() % (uint32_t)(_data.x - _data.room[i].w)-2;
+        uint16_t t_y = (_data.room[i].h/2) + _data.rmg_rand() % (uint32_t)(_data.y - _data.room[i].h)-2;
+        _data.room[i].position = (t_y * _data.x) + t_x;
+
     }
-    for (uint32_t i = 0; i < max_rooms; i++)
+    for (uint32_t i = 0; i < _data.roomCount; i++)
     {
-        for (uint32_t j = 0; j < max_rooms; j++)
+        for (uint32_t j = 0; j < _data.roomCount; j++)
         {
-            if ((room[i].valid && room[j].valid)&&(i!=j))
+            if ((_data.room[i].valid && _data.room[j].valid)&&(i!=j))
             {
-                if (max_r > (uint32_t)sqrt((float)((room[i].x-room[j].x)*(room[i].x-room[j].x))+((room[i].y-room[j].y)*(room[i].y-room[j].y))))
-                    room[j].valid = false;
+                uint16_t t_xi = _data.room[i].position % _data.x;
+                uint16_t t_yi = _data.room[i].position / _data.x;
+                uint16_t t_xj = _data.room[j].position % _data.x;
+                uint16_t t_yj = _data.room[j].position / _data.x;
+                if (max_r > (uint32_t)sqrt((float)((t_xi-t_xj)*(t_xi-t_xj))+((t_yi-t_yj)*(t_yi-t_yj))))
+                    _data.room[j].valid = false;
             }
         }
     }
-    for (uint32_t i = 0; i < max_rooms; i++)
+    for (uint32_t i = 0; i < _data.roomCount; i++)
     {
-        if (room[i].valid)
+        if (_data.room[i].valid)
         {
-            for (uint32_t j = 1; j < room[i].w; j++)
+            for (uint32_t j = 1; j < _data.room[i].w; j++)
             {
-                for (uint32_t k = 1; k < room[i].h; k++)
+                for (uint32_t k = 1; k < _data.room[i].h; k++)
                 {
-                    uint32_t tilePos = ((room[i].y-(room[i].h/2)+k) * _data.x) + room[i].x-(room[i].w/2)+j;
+                    uint16_t t_xi = _data.room[i].position % _data.x;
+                    uint16_t t_yi = _data.room[i].position / _data.x;
+                    uint32_t tilePos = ((t_yi-(_data.room[i].h/2)+k) * _data.x) + t_xi-(_data.room[i].w/2)+j;
                     if (tilePos < _data.mapSize)
                         _data.tile[tilePos] = eTile::FLOOR;
                 }
             }
         }
     }
-    for (uint32_t i = 0; i < max_rooms; i++)
-    {
-        if (room[i].valid)
-        {
-            for (uint32_t j = 0; j < max_rooms; j++)
-            {
-                bool path_found = false;
-                if ((room[j].valid)&&(i != j))
-                {
-                    if (!path_found)
-                    {
-                        eTile previous_tile = eTile::FLOOR;
-                        uint32_t transitions = 0;
-                        uint32_t current_x = room[i].x;
-                        uint32_t current_y = room[i].y;
-                        for (current_x = room[i].x; current_x != room[j].x;)
-                        {
-                            if (previous_tile != _data.tile[(current_y * _data.x) + current_x])
-                                transitions++;
-                            if (_data.tile[(current_y * _data.x) + current_x] == eTile::PATH)
-                                transitions++;
-                            previous_tile = _data.tile[(current_y * _data.x) + current_x];
-                            if (room[i].x < room[j].x) current_x++;
-                                    else current_x--;
-                        }
-                        for (current_y = room[i].y; current_y != room[j].y;)
-                        {
-                            if (previous_tile != _data.tile[(current_y * _data.x) + current_x])
-                                transitions++;
-                            if (_data.tile[(current_y * _data.x) + current_x] == eTile::PATH)
-                                transitions++;
-                            previous_tile = _data.tile[(current_y * _data.x) + current_x];
-                            if (room[i].y < room[j].y) current_y++;
-                                    else current_y--;
-                        }
-                        if ((!path_found)&&(transitions == 2))
-                        {
-                            path_found = true;
-                            current_x = room[i].x;
-                            current_y = room[i].y;
-                            for (current_x = room[i].x; current_x != room[j].x;)
-                            {
-                                _data.tile[(current_y * _data.x) + current_x] = eTile::PATH;
-                                if (room[i].x < room[j].x) current_x++;
-                                        else current_x--;
-                            }
-                            for (current_y = room[i].y; current_y != room[j].y;)
-                            {
-                                _data.tile[(current_y * _data.x) + current_x] = eTile::PATH;
-                                if (room[i].y < room[j].y) current_y++;
-                                        else current_y--;
-                            }
-                        }
-                    }
-                    if (!path_found)
-                    {
-                        eTile previous_tile = eTile::FLOOR;
-                        uint32_t transitions = 0;
-                        uint32_t current_x = room[i].x;
-                        uint32_t current_y = room[i].y;
-                        for (current_y = room[i].y; current_y != room[j].y;)
-                        {
-                            if (previous_tile != _data.tile[(current_y * _data.x) + current_x])
-                                transitions++;
-                            if (_data.tile[(current_y * _data.x) + current_x] == eTile::PATH)
-                                transitions++;
-                            previous_tile = _data.tile[(current_y * _data.x) + current_x];
-                            if (room[i].y < room[j].y) current_y++;
-                                    else current_y--;
-                        }
-                        for (current_x = room[i].x; current_x != room[j].x;)
-                        {
-                            if (previous_tile != _data.tile[(current_y * _data.x) + current_x])
-                                transitions++;
-                            if (_data.tile[(current_y * _data.x) + current_x] == eTile::PATH)
-                                transitions++;
-                            previous_tile = _data.tile[(current_y * _data.x) + current_x];
-                            if (room[i].x < room[j].x) current_x++;
-                                    else current_x--;
-                        }
-                        if ((!path_found)&&(transitions == 2))
-                        {
-                            path_found = true;
-                            current_x = room[i].x;
-                            current_y = room[i].y;
-                            for (current_y = room[i].y; current_y != room[j].y;)
-                            {
-                                _data.tile[(current_y * _data.x) + current_x] = eTile::PATH;
-                                if (room[i].y < room[j].y) current_y++;
-                                        else current_y--;
-                            }
-                            for (current_x = room[i].x; current_x != room[j].x;)
-                            {
-                                _data.tile[(current_y * _data.x) + current_x] = eTile::PATH;
-                                if (room[i].x < room[j].x) current_x++;
-                                        else current_x--;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+}
+
+void mapGenerator_D2_fillRooms(sGenerationData &_data)
+{
     for (uint16_t i = 0; i < _data.y; i++)
     {
         for (uint16_t j = 0; j < _data.x; j++)
@@ -177,8 +82,6 @@ void mapGenerator_D2(sGenerationData &_data)
                 _data.tile[(i * _data.x) + j] = eTile::WALL;
         }
     }
-	delete [] room;
-
     for (uint32_t i = 0; i < _data.mapSize; i++)
     {
         if (_data.tile[i] == eTile::PATH)
@@ -207,4 +110,15 @@ void mapGenerator_D2(sGenerationData &_data)
         delete [] fillData.valid;
         fillData.valid = nullptr;
     }
+}
+
+void mapGenerator_D2(sGenerationData &_data)
+{
+    _data.mapSize = _data.x * _data.y;
+    _data.tile = new eTile[_data.mapSize];
+    for (uint16_t i = 0; i < _data.mapSize; i++)
+        _data.tile[i] = eTile::WALL;
+    mapGenerator_D2_generateRooms(_data);
+    mapGenerator_connectRooms_90d(_data);
+    mapGenerator_D2_fillRooms(_data);
 }

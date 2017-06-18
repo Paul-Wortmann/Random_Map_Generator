@@ -28,6 +28,8 @@
 #include "map_floodfill.hpp"
 #include "map_utils.hpp"
 
+void mapGenerator_D2_generateRooms(sGenerationData &_data);
+void mapGenerator_D2_fillRooms(sGenerationData &_data);
 void mapGenerator_D2(sGenerationData &_data);
 
 #endif // MAPGENERATOR_D2_HPP

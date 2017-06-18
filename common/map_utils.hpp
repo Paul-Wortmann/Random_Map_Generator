@@ -27,5 +27,9 @@
 #include "map_data_types.hpp"
 
 void mapCheck(sGenerationData &_data);
+int16_t mapGenerator_tilesRoom(sGenerationData &_data, uint32_t _tile);
+void mapGenerator_findNeighborRooms(sGenerationData &_data);
+void mapGenerator_connectRooms_direct(sGenerationData &_data);
+void mapGenerator_connectRooms_90d(sGenerationData &_data);
 
 #endif // MAP_UTILS_HPP

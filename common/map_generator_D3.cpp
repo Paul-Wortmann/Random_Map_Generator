@@ -100,4 +100,10 @@ void mapGenerator_D3(sGenerationData &_data)
         _data.tile[i] = eTile::WALL;
     mapGenerator_D3_generateRooms(_data);
     mapGenerator_D3_fillRooms(_data);
+    mapGenerator_connectRooms_90d(_data);
+    for (uint32_t i = 0; i < _data.mapSize; i++)
+    {
+        if (_data.tile[i] == eTile::PATH)
+            _data.tile[i] = eTile::FLOOR;
+    }
 }
