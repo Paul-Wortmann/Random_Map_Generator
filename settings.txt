@@ -15,7 +15,7 @@
 # 'room_max_y' Value of 3 to map_height / 2, Default: 15
 
 <map_settings>
-    <map_algorithm = AD2/>
+    <map_algorithm = AD3/>
     <map_exporter = ED1/>
     <file_export = default.txt/>
     <map_seed = 0/>

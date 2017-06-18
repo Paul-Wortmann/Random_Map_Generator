@@ -25,52 +25,53 @@
 
 void mapGenerator_D3_generateRooms(sGenerationData &_data)
 {
-    _data.roomCount = ((_data.x / _data.roomMax_x) * (_data.y / _data.roomMax_y)) / (uint16_t)2;
-    //std::cout << "roomCount: " << ((_data.x / _data.roomMax_x) * (_data.y / _data.roomMax_y)) /2 << std::endl;
-    uint16_t roomPlacementAttempts = 4;
-    _data.room = new sRoomData[_data.roomCount];
-    uint16_t t_x = (_data.rmg_rand() % (_data.x - 2)) + 1;
-    uint16_t t_y = (_data.rmg_rand() % (_data.y - 2)) + 1;
-    uint16_t t_w = (_data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x - _data.roomMin_x)) / 2;
-    _data.room[0].position = (t_y * _data.x) + t_x;
-    _data.room[0].w = t_w;
-    _data.room[0].h = t_w;
-    _data.room[0].valid = true;
-    for (uint16_t i = 1; i < _data.roomCount; i++)
+    uint16_t t_roomCount = ((_data.x / _data.roomMin_x) * (_data.y / _data.roomMin_y)) * 2;
+    sRoomData *t_room = new sRoomData[t_roomCount];
+    for (uint16_t i = 0; i < t_roomCount; i++)
     {
-        bool placeFound = false;
-        for (uint16_t j = 0; j < roomPlacementAttempts; j++)
+        uint16_t t_r = (_data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x - _data.roomMin_x)) / 2;
+        uint16_t t_x = t_r + (_data.rmg_rand() % (_data.x - t_r * 2));
+        uint16_t t_y = t_r + (_data.rmg_rand() % (_data.y - t_r * 2));
+        t_room[i].position = (t_y * _data.x) + t_x;
+        t_room[i].w = t_r;
+        t_room[i].h = t_room[i].w;
+        t_room[i].valid = true;
+    }
+    for (uint16_t i = 0; i < t_roomCount; i++)
+    {
+        for (uint16_t j = i+1; j < t_roomCount; j++)
         {
-            t_x = (_data.rmg_rand() % (_data.x - 1 - _data.roomMax_x/2)) + (_data.roomMax_x/2) + 1;
-            t_y = (_data.rmg_rand() % (_data.y - 1 - _data.roomMax_x/2)) + (_data.roomMax_x/2) + 1;
-            t_w = (_data.roomMin_x + _data.rmg_rand() % (_data.roomMax_x - _data.roomMin_x)) / 2;
-            for (uint16_t k = 0; k <= i; k++)
+            if ((j < t_roomCount) && (t_room[i].valid) && (t_room[j].valid))
             {
-                if (_data.room[k].valid)
-                {
-                    uint16_t t_rx = _data.room[k].position % _data.x;
-                    uint16_t t_ry = _data.room[k].position / _data.x;
-                    uint16_t t_rw = _data.room[k].w;
-                    int16_t dx = t_x - t_rx;
-                    int16_t dy = t_y - t_ry;
-                    int16_t dr = t_w + t_rw;
-                    placeFound = ((dx * dx) + (dy * dy) > (dr * dr));
-                    //std::cout << "collision detected" << std::endl;
-                }
-                if (placeFound)
-                    k = i+1;
-            }
-            if (placeFound)
-            {
-                _data.room[i].position = (t_y * _data.x) + t_x;
-                _data.room[i].w = t_w;
-                _data.room[i].h = t_w;
-                placeFound = true;
-                j = roomPlacementAttempts;
+                uint16_t t_x1 = t_room[i].position % _data.x;
+                uint16_t t_y1 = t_room[i].position / _data.x;
+                uint16_t t_r1 = t_room[i].w + 1;
+                uint16_t t_x2 = t_room[j].position % _data.x;
+                uint16_t t_y2 = t_room[j].position / _data.x;
+                uint16_t t_r2 = t_room[j].w + 1;
+                bool valid = (((t_x1 - t_x2) * (t_x1 - t_x2)) + ((t_y1 - t_y2) * (t_y1 - t_y2)) > ((t_r1 + t_r2) * (t_r1 + t_r2)));
+                t_room[j].valid = valid;
             }
         }
-        _data.room[i].valid = placeFound;
     }
+    _data.roomCount = 0;
+    for (uint16_t i = 0; i < t_roomCount; i++)
+        if (t_room[i].valid)
+            _data.roomCount++;
+    _data.room = new sRoomData[_data.roomCount];
+    uint16_t roomCount = 0;
+    for (uint16_t i = 0; i < t_roomCount; i++)
+    {
+        if (t_room[i].valid)
+        {
+            _data.room[roomCount].position = t_room[i].position;
+            _data.room[roomCount].w = t_room[i].w;
+            _data.room[roomCount].h = t_room[i].h;
+            _data.room[roomCount].valid = true;
+            roomCount++;
+        }
+    }
+    delete [] t_room;
 }
 
 void mapGenerator_D3_fillRooms(sGenerationData &_data)
@@ -81,7 +82,7 @@ void mapGenerator_D3_fillRooms(sGenerationData &_data)
             for (uint32_t j = 0; j < _data.mapSize; j++)
             {
                 uint16_t point_x = j % _data.x;
-                uint16_t point_y =  j / _data.x;
+                uint16_t point_y = j / _data.x;
                 uint16_t radius = _data.room[i].w;
                 uint16_t circle_x = _data.room[i].position % _data.x;
                 uint16_t circle_y = _data.room[i].position / _data.x;
