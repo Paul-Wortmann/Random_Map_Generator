@@ -109,21 +109,21 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
                 if (valueData.compare("EF1") == 0)
                     _data.exporter = eExporter::EF1;
             }
-            if (keyData.compare("file_export") == 0)
+            if (keyData.compare("map_file_export") == 0)
                     _data.fileExport = valueData;
-            if (keyData.compare("wall_Width") == 0)
+            if (keyData.compare("map_wall_Width") == 0)
                     _data.wallWidth = std::stoul(valueData);
-            if (keyData.compare("cell_density") == 0)
+            if (keyData.compare("map_cell_density") == 0)
                     _data.density = std::stof(valueData);
-            if (keyData.compare("iterations") == 0)
+            if (keyData.compare("map_iterations") == 0)
                     _data.iterations = std::stoul(valueData);
-            if (keyData.compare("room_min_x") == 0)
+            if (keyData.compare("map_room_min_x") == 0)
                     _data.roomMin_x = std::stoul(valueData);
-            if (keyData.compare("room_min_y") == 0)
+            if (keyData.compare("map_room_min_y") == 0)
                     _data.roomMin_y = std::stoul(valueData);
-            if (keyData.compare("room_max_x") == 0)
+            if (keyData.compare("map_room_max_x") == 0)
                     _data.roomMax_x = std::stoul(valueData);
-            if (keyData.compare("room_max_y") == 0)
+            if (keyData.compare("map_room_max_y") == 0)
                     _data.roomMax_y = std::stoul(valueData);
         }
         t_fstream.close();
@@ -131,6 +131,10 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
             _data.x = 10;
         if (_data.y < 10)
             _data.y = 10;
+        if (_data.x > 1000)
+            _data.x = 1000;
+        if (_data.y > 1000)
+            _data.y = 1000;
         _data.mapSize = _data.x * _data.y;
         if (_data.roomMin_x < 3)
             _data.roomMin_x = 3;

@@ -120,7 +120,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
 {
     _data.tile[_tile] = eTile::FLOOR;
     uint32_t tiles_available = 1;
-    bool new__direction_bias = false;
+    bool new_direction_bias = false;
     uint16_t tile_direction = 0;
     while (tiles_available > 0)
     {
@@ -141,7 +141,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
         bool tile_left_ok = map_gen_maze_check_tile(_data, tile_left, _data.directionBias_left);
         if (tile_left_ok) tiles_available++;
 
-        if ((new__direction_bias) || (_direction_bias == _data.directionBias_none)) tile_direction = (_data.rmg_rand() % 4) + 1;
+        if ((new_direction_bias) || (_direction_bias == _data.directionBias_none)) tile_direction = (_data.rmg_rand() % 4) + 1;
         else
         {
             tile_direction = (_data.rmg_rand()%(4+_data.directionBias_Threshold))+1;
@@ -149,7 +149,7 @@ void map_gen_maze(sGenerationData &_data, uint32_t _tile, uint16_t _direction_bi
             else
             {
                 _direction_bias = tile_direction;
-                new__direction_bias = true;
+                new_direction_bias = true;
             }
         }
         if (tile_direction == _data.directionBias_up)

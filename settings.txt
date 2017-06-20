@@ -1,34 +1,69 @@
 # Random Map Generator. Copyright (C) 2017 Paul Wortmann, PhysHex Games, www.physhexgames.com
 
-# 'map_seed' = 'uint64_t' if map seed is 0, a new random seed will be generated.
-# 'map_width' a value greater than 10 and less than 1001.
-# 'map_height' a value greater than 10 and less than 1001.
-# 'map_algorithm' currently supported: 'AC1' 'AM1' 'AD1' 'AD2' 'AD3'
-# 'map_exporter' the default is the debug exporter: 'ED1'
-# 'file_export' specify the file to export the map to. Default: "default.txt"
-# 'wall_Width' Used to specify the wall with for some algorithms.
-# 'cell_density' Map fill density, a float value of 0 - 1. 1 being 100%
-# 'iterations' Best left at the default value of: 2
-# 'room_min_x' Value of 3 to map_width / 2, Default: 11
-# 'room_min_y' Value of 3 to map_height / 2, Default: 11
-# 'room_max_x' Value of 3 to map_width / 2, Default: 15
-# 'room_max_y' Value of 3 to map_height / 2, Default: 15
+# map_settings:
+    # 'map_seed' = 'uint64_t' if map seed is 0, a new random seed will be generated.
+    # 'map_width' = a value greater than 10 and less than 1001.
+    # 'map_height' = a value greater than 10 and less than 1001.
+    # 'map_algorithm' = currently supported: 'AC1' 'AM1' 'AD1' 'AD2' 'AD3'
+    # 'map_exporter' = the default is the debug exporter: 'ED1'
+    # 'map_file_export' = specify the file to export the map to. Default: "default.txt"
+    # 'map_wall_Width' = Used to specify the wall with for some algorithms.
+    # 'map_cell_density' = Map fill density, a float value of 0 - 1. 1 being 100%
+    # 'map_iterations' = Best left at the default value of: 2
+    # 'map_room_min_x' = Value of 3 to map_width / 2, Default: 11
+    # 'map_room_min_y' = Value of 3 to map_height / 2, Default: 11
+    # 'map_room_max_x' = Value of 3 to map_width / 2, Default: 15
+    # 'map_room_max_y' = Value of 3 to map_height / 2, Default: 15
 
-<map_settings>
-    <map_algorithm = AD2/>
-    <map_exporter = ED1/>
-    <file_export = default.txt/>
-    <map_seed = 0/>
-    <map_width = 100/>
-    <map_height = 100/>
-    <wall_Width = 3/>
-    <cell_density = 0.625/>
-    <iterations = 2/>
-    <room_min_x = 11/>
-    <room_min_y = 11/>
-    <room_max_x = 15/>
-    <room_max_y = 15/>
-</map_settings>
+# room:
+    # 'room_position_x' = a value that is within the map bounds, else room not generated.
+    # 'room_position_y' = a value that is within the map bounds, else room not generated.
+    # 'room_size_x' = a value that is greater than 3 and is within the map bounds, else room not generated.
+    # 'room_size_y' = a value that is greater than 3 and is within the map bounds, else room not generated.
+    # 'room_shape' = either 'circle' or 'square'
+    # 'room_door' = a value of 'none',  or 'square'
+
+# exit:
+    # 'exit_position_x' = a value that is within the map bounds, else exit not generated, a negitive value generates the exit in a random position.
+    # 'exit_position_y' = a value that is within the map bounds, else exit not generated, a negitive value generates the exit in a random position.
+    # 'exit_uid' = exit unique ID, used when generating multiple maps, of if required.
+
+
+
+<map>
+
+    <map_settings>
+        <map_algorithm = AM1/>
+        <map_exporter = ED1/>
+        <map_file_export = default.txt/>
+        <map_seed = 0/>
+        <map_width = 100/>
+        <map_height = 100/>
+        <map_wall_Width = 3/>
+        <map_cell_density = 0.625/>
+        <map_iterations = 2/>
+        <map_room_min_x = 11/>
+        <map_room_min_y = 11/>
+        <map_room_max_x = 15/>
+        <map_room_max_y = 15/>
+    </map_settings>
+
+    <room>
+        <room_position_x = 0/>
+        <room_position_y = 0/>
+        <room_size_x = 40/>
+        <room_size_y = 40/>
+        <room_shape = square/>
+        <room_door = north/>
+    </room>
+
+    <exit>
+        <exit_position_x = 0/>
+        <exit_position_y = 0/>
+        <exit_uid = 1/>
+    </exit>
+
+</map>
 
 
 

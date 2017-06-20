@@ -39,10 +39,8 @@
 enum class eError     : uint16_t { NONE = 0, ALGORITHM = 1 };
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AD3 = 3, AM1 = 4 };
 enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
-enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4 };
+enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4, DOOR = 5 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
-
-//enum eObject    : uint16_t { NONE = 0, EXIT = 1, CHEST = 2 };
 
 struct sRoomGenData
 {
@@ -80,6 +78,13 @@ struct sRoomData
     sRoomID connection[4] = {};
 };
 
+struct sExitData
+{
+    uint16_t ID = 0;
+    bool valid = false;
+    uint32_t position = 0;
+};
+
 struct sGenerationData
 {
     sGenerationData(void) {};
@@ -89,12 +94,8 @@ struct sGenerationData
 
     uint64_t rmg_rand(void) {return rand();};
     void rmg_rseed(uint64_t _seed) {srand((uint32_t)_seed);};
-    //std::mt19937 rand;
-
 
     uint16_t wallWidth = 3;
-    uint16_t exitCount = 4;
-
     float density = 0.625f;
     uint16_t iterations = 2;
 
@@ -128,8 +129,9 @@ struct sGenerationData
     std::string fileSettings = "settings.txt";
     uint16_t roomCount = 0;
     sRoomData *room = nullptr;
+    uint16_t exitCount = 0;
+    sExitData *exit = nullptr;
     eTile *tile = nullptr;
-//    eObject *object = nullptr;
 };
 
 struct sMapNode
