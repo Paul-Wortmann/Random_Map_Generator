@@ -38,9 +38,10 @@
 
 enum class eError     : uint16_t { NONE = 0, ALGORITHM = 1 };
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AD3 = 3, AM1 = 4 };
-enum class eExporter  : uint16_t { ED1 = 0, EF1 = 1 };
+enum class eExporter  : uint16_t { ED1 = 0, ER1 = 1, EF1 = 2 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4, DOOR = 5 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
+enum class eRoomShape : uint16_t { NONE = 0, SQUARE = 1, CIRCLE = 2};
 
 struct sRoomGenData
 {
@@ -74,6 +75,7 @@ struct sRoomData
     uint32_t position = 0;
     uint16_t w = 0;
     uint16_t h = 0;
+    eRoomShape shape = eRoomShape::NONE;
     uint16_t connectionCount = 0;
     sRoomID connection[4] = {};
 };

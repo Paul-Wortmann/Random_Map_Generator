@@ -114,6 +114,7 @@ void mapGenerator_D2_fillRooms(sGenerationData &_data)
 
 void mapGenerator_D2(sGenerationData &_data)
 {
+    _data.exitCount = 0;
     _data.mapSize = _data.x * _data.y;
     _data.tile = new eTile[_data.mapSize];
     for (uint16_t i = 0; i < _data.mapSize; i++)

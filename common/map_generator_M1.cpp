@@ -244,6 +244,7 @@ bool connect_room(sGenerationData &_data, sRoom &_room)
 
 void mapGenerator_M1(sGenerationData &_data)
 {
+    _data.exitCount = 0;
     uint32_t mapSize = _data.x * _data.y;
     _data.tile = new eTile[mapSize];
     for (uint32_t i = 0; i < _data.mapSize; i++)
