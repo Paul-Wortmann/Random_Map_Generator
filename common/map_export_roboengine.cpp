@@ -27,7 +27,6 @@ void mapExport_RoboEngine(const sGenerationData &_data)
 {
     uint16_t indentLevel = 0;
     std::string indent = "   ";
-    bool graphicalOutput = true;
     std::ofstream t_fstream(_data.fileExport.c_str(), std::ifstream::out);
     // settings
     for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
@@ -49,6 +48,31 @@ void mapExport_RoboEngine(const sGenerationData &_data)
     indentLevel--;
     for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
     t_fstream << "</settings>" << std::endl;
+    // tile data
+    for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
+    t_fstream << "<data>" << std::endl;
+    indentLevel++;
+    if (_data.tile != nullptr)
+    {
+        for (uint16_t i = 0; i < _data.y; i++)
+        {
+            for (uint16_t k = 0; k < indentLevel; k++) t_fstream << indent;
+            t_fstream << "<tiles" << " = ";
+            for (uint16_t j = 0; j < _data.x; j++)
+            {
+                uint32_t mapTile = (i * _data.y) + j;
+                {
+                    t_fstream << (uint16_t)_data.tile[mapTile];
+                    if (j < _data.x-1)
+                        t_fstream << ",";
+                }
+            }
+            t_fstream << "/>" << std::endl;
+        }
+    }
+    indentLevel--;
+    for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
+    t_fstream << "</data>" << std::endl;
     // room data
     if ((_data.roomCount > 0) && (_data.room != nullptr))
     {
@@ -60,7 +84,7 @@ void mapExport_RoboEngine(const sGenerationData &_data)
             if (_data.room[i].valid)
             {
                 for (uint16_t k = 0; k < indentLevel; k++) t_fstream << indent;
-                t_fstream << "<room = " << i+1 << ">" << std::endl;
+                t_fstream << "<room>" << std::endl;
                 indentLevel++;
 
                 for (uint16_t k = 0; k < indentLevel; k++) t_fstream << indent;
@@ -101,35 +125,13 @@ void mapExport_RoboEngine(const sGenerationData &_data)
             t_fstream << "<exit_uid = " << (_data.exit[i].ID) << ">" << std::endl;
 
             indentLevel--;
-            for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
+            for (uint16_t k = 0; k < indentLevel; k++) t_fstream << indent;
             t_fstream << "</exit>" << std::endl;
         }
         indentLevel--;
         for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
         t_fstream << "</exit_data>" << std::endl;
     }
-    // tile data
-    for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
-    t_fstream << "<data>" << std::endl;
-    indentLevel++;
-    for (uint16_t i = 0; i < _data.y; i++)
-    {
-        for (uint16_t k = 0; k < indentLevel; k++) t_fstream << indent;
-        t_fstream << "<tiles" << " = ";
-        for (uint16_t j = 0; j < _data.x; j++)
-        {
-            uint32_t mapTile = (i * _data.y) + j;
-            {
-                t_fstream << (uint16_t)_data.tile[mapTile];
-                if (j < _data.x-1)
-                    t_fstream << ",";
-            }
-        }
-        t_fstream << "/>" << std::endl;
-    }
-    indentLevel--;
-    for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
-    t_fstream << "</data>" << std::endl;
     indentLevel--;
     for (uint16_t i = 0; i < indentLevel; i++) t_fstream << indent;
     t_fstream << "</map>" << std::endl;

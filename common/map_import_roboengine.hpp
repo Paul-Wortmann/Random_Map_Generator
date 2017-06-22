@@ -26,6 +26,6 @@
 
 #include "map_data_types.hpp"
 
-void mapImport_RoboEngine(const sGenerationData &_data);
+void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data);
 
 #endif // MAPIMPORT_ROBOENGINE_HPP

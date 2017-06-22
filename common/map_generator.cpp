@@ -46,10 +46,12 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
 {
     _data.seed = (_data.seed == 0) ? time(nullptr) : _data.seed;
     _data.rmg_rseed(_data.seed);
+    mapImport_RoboEngine("test.rmx", _data);
     if ((_data.x < 10) || (_data.y < 10))
         return EXIT_FAILURE;
     else
     {
+        /*
         // generate
         switch (_data.algorithm)
         {
@@ -72,6 +74,7 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
                 return EXIT_FAILURE;
             break;
         }
+        */
         // export
         switch (_data.exporter)
         {
