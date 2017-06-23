@@ -35,4 +35,5 @@ bool add_room(sGenerationData &_data, sRoom &_room);
 bool connect_room(sGenerationData &_data, sRoom &_room);
 void mapGenerator_M1(sGenerationData &_data);
 
+
 #endif // MAPGENERATOR_M1_HPP

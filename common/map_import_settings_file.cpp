@@ -28,13 +28,45 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
     std::ifstream t_fstream(_fileName.c_str(), std::ifstream::in);
     if (t_fstream.is_open())
     {
+        _data.roomCount = 0;
+        _data.exitCount = 0;
         while (t_fstream.good())
         {
+            std::string tData = "";
+            std::getline(t_fstream, tData);
+            uint32_t tLength = tData.length();
+            std::string lData = "";
+            if (tLength > 2)
+            {
+                for (uint32_t i = 0; i < tLength; i++)
+                {
+                    if (tData[i] != ' ')
+                        lData += tData[i];
+                    if (tData[i] == '>')
+                        i = tLength;
+                }
+            }
+            if (lData.compare("<room>") == 0)
+                _data.roomCount++;
+            if (lData.compare("<exit>") == 0)
+                _data.exitCount++;
+        }
+        if (_data.roomCount > 0)
+            _data.room = new sRoomData[_data.roomCount];
+        if (_data.exitCount > 0)
+            _data.exit = new sExitData[_data.exitCount];
+        t_fstream.clear();
+        t_fstream.seekg (0, t_fstream.beg);
+        while (t_fstream.good())
+        {
+            int16_t roomCount = -1;
+            int16_t roomDoorCount = 0;
+            int16_t exitCount = -1;
             bool commentFound = false;
+            bool dataBegin = false;
             bool keyBegin = false;
             bool equalBegin = false;
             bool valueBegin = false;
-            bool dataBegin = false;
             std::string keyData = "";
             std::string valueData = "";
             std::string tData = "";
@@ -43,12 +75,20 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
             std::string lData = "";
             for (uint32_t i = 0; i < tLength; i++)
             {
-                if ((!dataBegin) && (tData[i] != ' '))
+                if (tData[i] != ' ')
                     dataBegin = true;
                 if (dataBegin)
                     lData += tData[i];
+                if (tData[i] == '>')
+                    i = tLength;
             }
-
+            if (lData.compare("<room>") == 0)
+            {
+                roomCount++;
+                roomDoorCount = 0;
+            }
+            if (lData.compare("<exit>") == 0)
+                exitCount++;
             uint32_t lLength = lData.length();
             for (uint32_t i = 0; i < lLength; i++)
             {
@@ -83,6 +123,7 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
                         equalBegin = true;
                 }
             }
+            // map settings:
             if (keyData.compare("map_seed") == 0)
                 _data.seed = std::stoull(valueData);
             if (keyData.compare("map_width") == 0)
@@ -108,25 +149,58 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
                     _data.exporter = eExporter::ED1;
                 if (valueData.compare("EF1") == 0)
                     _data.exporter = eExporter::EF1;
+                if (valueData.compare("ER1") == 0)
+                    _data.exporter = eExporter::ER1;
             }
             if (keyData.compare("map_file_export") == 0)
-                    _data.fileExport = valueData;
+                _data.fileExport = valueData;
             if (keyData.compare("map_wall_Width") == 0)
-                    _data.wallWidth = std::stoul(valueData);
+                _data.wallWidth = std::stoul(valueData);
             if (keyData.compare("map_cell_density") == 0)
-                    _data.density = std::stof(valueData);
+                _data.density = std::stof(valueData);
             if (keyData.compare("map_iterations") == 0)
-                    _data.iterations = std::stoul(valueData);
+                _data.iterations = std::stoul(valueData);
             if (keyData.compare("map_room_min_x") == 0)
-                    _data.roomMin_x = std::stoul(valueData);
+                _data.roomMin_x = std::stoul(valueData);
             if (keyData.compare("map_room_min_y") == 0)
-                    _data.roomMin_y = std::stoul(valueData);
+                _data.roomMin_y = std::stoul(valueData);
             if (keyData.compare("map_room_max_x") == 0)
-                    _data.roomMax_x = std::stoul(valueData);
+                _data.roomMax_x = std::stoul(valueData);
             if (keyData.compare("map_room_max_y") == 0)
-                    _data.roomMax_y = std::stoul(valueData);
+                _data.roomMax_y = std::stoul(valueData);
+            // map rooms:
+            if (keyData.compare("room_size_x") == 0)
+                _data.room[roomCount].w = std::stoul(valueData);
+            if (keyData.compare("room_size_y") == 0)
+                _data.room[roomCount].h = std::stoul(valueData);
+            if (keyData.compare("room_position_x") == 0)
+                _data.room[roomCount].position += std::stoul(valueData);
+            if (keyData.compare("room_position_y") == 0)
+                _data.room[roomCount].position += (std::stoul(valueData) * _data.x);
+            if (keyData.compare("room_shape") == 0)
+            {
+                if (valueData.compare("square") == 0)
+                    _data.room[roomCount].shape = eRoomShape::SQUARE;
+                if (valueData.compare("circle") == 0)
+                    _data.room[roomCount].shape = eRoomShape::CIRCLE;
+            }
+            if (keyData.compare("room_door") == 0)
+            {
+                if (valueData.compare("none") == 0)
+                    _data.room[roomCount].connection[roomDoorCount].direction = eDirection::NONE;
+                if (valueData.compare("north") == 0)
+                    _data.room[roomCount].connection[roomDoorCount].direction = eDirection::UP;
+                if (valueData.compare("south") == 0)
+                    _data.room[roomCount].connection[roomDoorCount].direction = eDirection::DOWN;
+                if (valueData.compare("east") == 0)
+                    _data.room[roomCount].connection[roomDoorCount].direction = eDirection::LEFT;
+                if (valueData.compare("west") == 0)
+                    _data.room[roomCount].connection[roomDoorCount].direction = eDirection::RIGHT;
+                roomDoorCount++;
+            }
+            // map exits:
+
         }
-        t_fstream.close();
         if (_data.x < 10)
             _data.x = 10;
         if (_data.y < 10)
@@ -156,6 +230,7 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
             _data.roomMax_x = _data.roomMin_x + 2;
         if (_data.roomMax_y < _data.roomMin_y)
             _data.roomMax_y = _data.roomMin_y + 2;
+        t_fstream.close();
     }
     else
     {

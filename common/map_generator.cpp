@@ -35,12 +35,18 @@ void cMapGenerator::free(sGenerationData &_data)
         delete [] _data.room;
         _data.room = nullptr;
     }
+    if (_data.exit != nullptr)
+    {
+        delete [] _data.exit;
+        _data.exit = nullptr;
+    }
 }
 
 uint16_t cMapGenerator::generate(sGenerationData &_data)
 {
     _data.seed = (_data.seed == 0) ? time(nullptr) : _data.seed;
     _data.rmg_rseed(_data.seed);
+    //mapImport_RoboEngine("test.rmx", _data);
     if ((_data.x < 10) || (_data.y < 10))
         return EXIT_FAILURE;
     else
@@ -72,6 +78,9 @@ uint16_t cMapGenerator::generate(sGenerationData &_data)
         {
             case eExporter::EF1:
                 mapExport_Flare(_data);
+            break;
+            case eExporter::ER1:
+                mapExport_RoboEngine(_data);
             break;
             default:
             case eExporter::ED1:
