@@ -116,7 +116,7 @@ void mapCheck(sGenerationData &_data)
 
 int16_t mapGenerator_tilesRoom(sGenerationData &_data, uint32_t _tile)
 {
-    if (_tile >= _data.mapSize)
+    if (_tile >= _data.tileCount)
         return -1;
     if (_data.tile[_tile] != eTile::FLOOR)
         return -1;
@@ -207,14 +207,14 @@ void mapGenerator_connectRooms_direct(sGenerationData &_data)
                 for (uint16_t k = ((r1_y < r2_y) ? r1_y : r2_y); k < ((r1_y > r2_y) ? r1_y : r2_y); k++)
                 {
                     uint32_t tile = (k * _data.x) + r1_x;
-                    if (tile < _data.mapSize)
+                    if (tile < _data.tileCount)
                         _data.tile[tile] = eTile::FLOOR;
                 }
             if ((_data.room[i].connection[j].direction == eDirection::LEFT) || (_data.room[i].connection[j].direction == eDirection::RIGHT))
                 for (uint16_t k = ((r1_x < r2_x) ? r1_x : r2_x); k < ((r1_x > r2_x) ? r1_x : r2_x); k++)
                 {
                     uint32_t tile = (r1_y * _data.x) + k;
-                    if (tile < _data.mapSize)
+                    if (tile < _data.tileCount)
                         _data.tile[tile] = eTile::FLOOR;
                 }
         }

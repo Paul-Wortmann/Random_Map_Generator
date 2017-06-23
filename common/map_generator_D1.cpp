@@ -163,9 +163,9 @@ void mapGenerator_D1_genRoomTileData(sGenerationData &_data)
 void mapGenerator_D1(sGenerationData &_data)
 {
     _data.exitCount = 0;
-    _data.mapSize = _data.x * _data.y;
-    _data.tile = new eTile[_data.mapSize];
-    for (uint16_t i = 0; i < _data.mapSize; i++)
+    _data.tileCount = _data.x * _data.y;
+    _data.tile = new eTile[_data.tileCount];
+    for (uint16_t i = 0; i < _data.tileCount; i++)
         _data.tile[i] = eTile::WALL;
     sRoomGenData *room = new sRoomGenData;
     room->sx = 0;

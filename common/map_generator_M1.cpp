@@ -25,14 +25,14 @@
 
 bool isWallTile(sGenerationData &_data, int32_t _tile)
 {
-    if ((_tile < 0) || (_tile >= int32_t(_data.mapSize-1)))
+    if ((_tile < 0) || (_tile >= int32_t(_data.tileCount-1)))
         return false;
     return (_data.tile[_tile] == eTile::WALL);
 }
 
 bool map_gen_maze_check_tile(sGenerationData &_data, int32_t _tile, eDirection _directionBias)
 {
-    if ((_tile < 0) || (_tile >= int32_t(_data.mapSize-1)))
+    if ((_tile < 0) || (_tile >= int32_t(_data.tileCount-1)))
         return false;
     if ((_tile / _data.x) == 0 || (_tile / _data.x) == _data.y-1 || (_tile % _data.x) == 0 || (_tile % _data.x) == _data.x-1)
         return false;
@@ -196,12 +196,12 @@ bool add_room(sGenerationData &_data, sRoom &_room)
 
 bool connect_room(sGenerationData &_data, sRoom &_room)
 {
-    uint16_t direction_axis = (abs(_room.x - _data.x) > abs(_room.y - _data.y)) ? _data.axisBias_x : _data.axisBias_y;
-    eDirection directionBias = (direction_axis == _data.axisBias_x) ? ((_room.x > _data.x/2) ? eDirection::RIGHT : eDirection::LEFT) : ((_room.y > _data.y/2) ? eDirection::DOWN : eDirection::UP);
+    eAxis directionAxis = (abs(_room.x - _data.x) > abs(_room.y - _data.y)) ? eAxis::X : eAxis::Y;
+    eDirection directionBias = (directionAxis == eAxis::X) ? ((_room.x > _data.x/2) ? eDirection::RIGHT : eDirection::LEFT) : ((_room.y > _data.y/2) ? eDirection::DOWN : eDirection::UP);
     bool foundWall = false;
     bool pathFound = false;
     uint32_t pathPos = (_room.y * _data.x) + _room.x;
-    uint16_t pathMax = (direction_axis == _data.axisBias_x) ? (abs(_data.x - _room.x) - 1) : (abs(_data.y - _room.y) - 1);
+    uint16_t pathMax = (directionAxis == eAxis::X) ? (abs(_data.x - _room.x) - 1) : (abs(_data.y - _room.y) - 1);
     for (uint16_t i = 0; i < pathMax; i++)
     {
         if (!pathFound)
@@ -212,7 +212,7 @@ bool connect_room(sGenerationData &_data, sRoom &_room)
                 pathFound = true;
             if ((foundWall)&&(_data.tile[pathPos] == eTile::WALL))
                 _data.tile[pathPos] = eTile::FLOOR;
-            pathPos = (direction_axis == _data.axisBias_x) ? ((directionBias == eDirection::RIGHT) ? pathPos-1 : pathPos+1) : ((directionBias == eDirection::DOWN) ? pathPos-_data.x : pathPos+_data.x);
+            pathPos = (directionAxis == eAxis::X) ? ((directionBias == eDirection::RIGHT) ? pathPos-1 : pathPos+1) : ((directionBias == eDirection::DOWN) ? pathPos-_data.x : pathPos+_data.x);
         }
     }
     return true;
@@ -220,9 +220,9 @@ bool connect_room(sGenerationData &_data, sRoom &_room)
 
 void mapGenerator_M1(sGenerationData &_data)
 {
-    uint32_t mapSize = _data.x * _data.y;
-    _data.tile = new eTile[mapSize];
-    for (uint32_t i = 0; i < _data.mapSize; i++)
+    _data.tileCount = _data.x * _data.y;
+    _data.tile = new eTile[_data.tileCount];
+    for (uint32_t i = 0; i < _data.tileCount; i++)
         _data.tile[i] = eTile::WALL;
     uint16_t no_of_rooms = 2+ _data.rmg_rand() % 4;
     sRoom *room = new sRoom[no_of_rooms];

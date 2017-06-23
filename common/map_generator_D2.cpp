@@ -26,7 +26,7 @@
 void mapGenerator_D2_generateRooms(sGenerationData &_data)
 {
     uint32_t max_r = (uint32_t)sqrt((float)(_data.roomMax_x*_data.roomMax_x)+(_data.roomMax_y*_data.roomMax_y));
-    _data.roomCount = (_data.mapSize) / (_data.roomMin_x*_data.roomMin_y);
+    _data.roomCount = (_data.tileCount) / (_data.roomMin_x*_data.roomMin_y);
     _data.room = new sRoomData[_data.roomCount];
     for (uint32_t i = 0; i < _data.roomCount; i++)
     {
@@ -64,7 +64,7 @@ void mapGenerator_D2_generateRooms(sGenerationData &_data)
                     uint16_t t_xi = _data.room[i].position % _data.x;
                     uint16_t t_yi = _data.room[i].position / _data.x;
                     uint32_t tilePos = ((t_yi-(_data.room[i].h/2)+k) * _data.x) + t_xi-(_data.room[i].w/2)+j;
-                    if (tilePos < _data.mapSize)
+                    if (tilePos < _data.tileCount)
                         _data.tile[tilePos] = eTile::FLOOR;
                 }
             }
@@ -82,7 +82,7 @@ void mapGenerator_D2_fillRooms(sGenerationData &_data)
                 _data.tile[(i * _data.x) + j] = eTile::WALL;
         }
     }
-    for (uint32_t i = 0; i < _data.mapSize; i++)
+    for (uint32_t i = 0; i < _data.tileCount; i++)
     {
         if (_data.tile[i] == eTile::PATH)
             _data.tile[i] = eTile::FLOOR;
@@ -90,19 +90,19 @@ void mapGenerator_D2_fillRooms(sGenerationData &_data)
 
     // setup fill data
     uint32_t startTile = 0;
-    for (uint16_t i = 0; i < _data.mapSize; i++)
+    for (uint16_t i = 0; i < _data.tileCount; i++)
     {
         if (_data.tile[i] == eTile::FLOOR)
             startTile = i;
     }
     sFillData fillData;
-    fillData.valid = new bool[_data.mapSize];
-    for (uint32_t i = 0; i < _data.mapSize; i++)
+    fillData.valid = new bool[_data.tileCount];
+    for (uint32_t i = 0; i < _data.tileCount; i++)
         fillData.valid[i] = false;
     fillData.tile = _data.tile[startTile];
     fillData.valid[startTile] = true;
     mapFloodFill(_data, fillData, startTile);
-    for (uint32_t i = 0; i < _data.mapSize; i++)
+    for (uint32_t i = 0; i < _data.tileCount; i++)
         _data.tile[i] = (fillData.valid[i]) ? eTile::FLOOR : eTile::WALL;
     // clean up
     if (fillData.valid != nullptr)
@@ -115,9 +115,9 @@ void mapGenerator_D2_fillRooms(sGenerationData &_data)
 void mapGenerator_D2(sGenerationData &_data)
 {
     _data.exitCount = 0;
-    _data.mapSize = _data.x * _data.y;
-    _data.tile = new eTile[_data.mapSize];
-    for (uint16_t i = 0; i < _data.mapSize; i++)
+    _data.tileCount = _data.x * _data.y;
+    _data.tile = new eTile[_data.tileCount];
+    for (uint16_t i = 0; i < _data.tileCount; i++)
         _data.tile[i] = eTile::WALL;
     mapGenerator_D2_generateRooms(_data);
     mapGenerator_connectRooms_90d(_data);

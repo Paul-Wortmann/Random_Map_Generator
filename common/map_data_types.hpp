@@ -41,6 +41,7 @@ enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AD3 = 3, AM1 = 4 }
 enum class eExporter  : uint16_t { ED1 = 0, ER1 = 1, EF1 = 2 };
 enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4, DOOR = 5 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
+enum class eAxis      : uint16_t { NONE = 0, X = 1, Y = 2, Z = 3 };
 enum class eRoomShape : uint16_t { NONE = 0, SQUARE = 1, CIRCLE = 2};
 
 struct sRoomGenData
@@ -109,18 +110,13 @@ struct sGenerationData
 
     uint16_t directionBias_Threshold = 32;
     eDirection directionBias = eDirection::NONE;
-
-    const uint16_t axisBias_none = 0;
-    const uint16_t axisBias_x    = 1;
-    const uint16_t axisBias_y    = 2;
-
     eError error = eError::NONE;
 
     std::string version = RMG_VERSION;
     uint64_t seed = 0;
     uint16_t x = 100;
     uint16_t y = 100;
-    uint32_t mapSize = x * y;
+    uint32_t tileCount = x * y;
     eAlgorithm algorithm = eAlgorithm::AC1;
     eExporter exporter = eExporter::ED1;
     std::string fileExport = "default.txt";

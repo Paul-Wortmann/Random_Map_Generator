@@ -149,9 +149,9 @@ void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data)
                     delete [] _data.tile;
                     _data.tile = nullptr;
                 }
-                _data.mapSize = _data.x * _data.y;
-                _data.tile = new eTile[_data.mapSize];
-                for (uint16_t k = 0; k < _data.mapSize; k++)
+                _data.tileCount = _data.x * _data.y;
+                _data.tile = new eTile[_data.tileCount];
+                for (uint16_t k = 0; k < _data.tileCount; k++)
                     _data.tile[k] = eTile::FLOOR;
             }
             if (keyData.compare("algorithm") == 0)

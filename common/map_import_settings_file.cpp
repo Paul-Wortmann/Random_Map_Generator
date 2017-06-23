@@ -209,7 +209,7 @@ void mapImportSettings(const std::string &_fileName, sGenerationData &_data)
             _data.x = 1000;
         if (_data.y > 1000)
             _data.y = 1000;
-        _data.mapSize = _data.x * _data.y;
+        _data.tileCount = _data.x * _data.y;
         if (_data.roomMin_x < 3)
             _data.roomMin_x = 3;
         if (_data.roomMin_y < 3)
