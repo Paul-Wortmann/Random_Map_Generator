@@ -47,10 +47,7 @@ void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data)
                 }
             }
             if (lData.compare("<room>") == 0)
-            {
                 _data.roomCount++;
-                std::cout << "room: " << _data.roomCount << std::endl;
-            }
             if (lData.compare("<exit>") == 0)
                 _data.exitCount++;
         }
@@ -91,6 +88,7 @@ void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data)
             {
                 roomCount++;
                 roomDoorCount = 0;
+                _data.room[roomCount].ID = roomCount;
             }
             if (lData.compare("<exit>") == 0)
                 exitCount++;
@@ -181,12 +179,23 @@ void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data)
                 }
                 tileCount++;
             }
-
             // map rooms:
+            if (keyData.compare("room_x") == 0)
+                _data.room[roomCount].position += std::stoull(valueData);
+            if (keyData.compare("room_y") == 0)
+                _data.room[roomCount].position += (std::stoull(valueData)) * _data.x;
+            if (keyData.compare("room_h") == 0)
+                _data.room[roomCount].h = std::stoull(valueData);
+            if (keyData.compare("room_w") == 0)
+                _data.room[roomCount].w = std::stoull(valueData);
             // map exits:
-
+            if (keyData.compare("exit_x") == 0)
+                _data.exit[exitCount].position += std::stoull(valueData);
+            if (keyData.compare("exit_y") == 0)
+                _data.exit[exitCount].position += (std::stoull(valueData)) * _data.x;
+            if (keyData.compare("exit_uid") == 0)
+                _data.exit[exitCount].ID = std::stoull(valueData);
         }
-
         t_fstream.close();
     }
     else
@@ -195,20 +204,3 @@ void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data)
     }
 }
 
-
-/*
-<map>
-   <settings>
-      <version = 0.0.1/>
-      <seed = 1498146878/>
-      <algorithm = 2/>
-      <dimension_x = 100/>
-      <dimension_y = 100/>
-   </settings>
-   <data>
-   </data>
-   <room_data>
-   </room_data>
-</map>
-
-*/

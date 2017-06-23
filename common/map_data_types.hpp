@@ -39,7 +39,7 @@
 enum class eError     : uint16_t { NONE = 0, ALGORITHM = 1 };
 enum class eAlgorithm : uint16_t { AC1 = 0, AD1 = 1, AD2 = 2, AD3 = 3, AM1 = 4 };
 enum class eExporter  : uint16_t { ED1 = 0, ER1 = 1, EF1 = 2 };
-enum class eTile      : uint16_t { FLOOR = 0, WALL = 1, LIQUID = 2, VOID = 3, PATH = 4, DOOR = 5 };
+enum class eTile      : uint16_t { NONE = 0, FLOOR = 1, WALL = 2, LIQUID = 3, VOID = 4, PATH = 5, DOOR = 6, NOGEN = 7, GEN = 8 };
 enum class eDirection : uint16_t { NONE = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 };
 enum class eAxis      : uint16_t { NONE = 0, X = 1, Y = 2, Z = 3 };
 enum class eRoomShape : uint16_t { NONE = 0, SQUARE = 1, CIRCLE = 2};

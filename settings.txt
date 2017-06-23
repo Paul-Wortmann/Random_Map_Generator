@@ -34,7 +34,7 @@
 
     <map_settings>
         <map_algorithm = AM1/>
-        <map_exporter = ED1/>
+        <map_exporter = ER1/>
         <map_file_export = default.txt/>
         <map_seed = 0/>
         <map_width = 100/>
