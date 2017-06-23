@@ -5,7 +5,7 @@
     # 'map_width' = a value greater than 10 and less than 1001.
     # 'map_height' = a value greater than 10 and less than 1001.
     # 'map_algorithm' = currently supported: 'AC1' 'AM1' 'AD1' 'AD2' 'AD3'
-    # 'map_exporter' = the default exporter is 'ER1' and the debug exporter is: 'ED1'
+    # 'map_exporter' = the default is the debug exporter: 'ED1'
     # 'map_file_export' = specify the file to export the map to. Default: "default.txt"
     # 'map_wall_Width' = Used to specify the wall with for some algorithms.
     # 'map_cell_density' = Map fill density, a float value of 0 - 1. 1 being 100%
@@ -21,11 +21,11 @@
     # 'room_size_x' = a value that is greater than 3 and is within the map bounds, else room not generated.
     # 'room_size_y' = a value that is greater than 3 and is within the map bounds, else room not generated.
     # 'room_shape' = either 'circle' or 'square'
-    # 'room_door' = a value of 'none', 'north', 'south', 'east', 'west'. If 'none' a door(s) will be generated randomly.
+    # 'room_door' = a value of 'none',  or 'square'
 
 # exit:
-    # 'exit_position_x' = a value that is within the map bounds, else exit not generated, a negative value generates the exit in a random position.
-    # 'exit_position_y' = a value that is within the map bounds, else exit not generated, a negative value generates the exit in a random position.
+    # 'exit_position_x' = a value that is within the map bounds, else exit not generated, a negitive value generates the exit in a random position.
+    # 'exit_position_y' = a value that is within the map bounds, else exit not generated, a negitive value generates the exit in a random position.
     # 'exit_uid' = exit unique ID, used when generating multiple maps, of if required.
 
 
@@ -33,8 +33,8 @@
 <map>
 
     <map_settings>
-        <map_algorithm = AD2/>
-        <map_exporter = ER1/>
+        <map_algorithm = AM1/>
+        <map_exporter = ED1/>
         <map_file_export = default.txt/>
         <map_seed = 0/>
         <map_width = 100/>
@@ -55,7 +55,6 @@
         <room_size_y = 40/>
         <room_shape = square/>
         <room_door = north/>
-        <room_door = south/>
     </room>
 
     <exit>

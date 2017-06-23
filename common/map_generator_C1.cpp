@@ -25,7 +25,7 @@
 
 void mapGenerator_C1(sGenerationData &_data)
 {
-    _data.exitCount = 0;
+    // setup map data
     uint32_t mapSize = _data.x * _data.y;
     _data.tile = new eTile[mapSize];
     for (uint16_t i = 0; i < _data.y; i++)
