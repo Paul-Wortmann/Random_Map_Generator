@@ -21,14 +21,11 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAP_IMPORT_SETTINGS_FILE_HPP
+#define MAP_IMPORT_SETTINGS_FILE_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+void mapImportSettings(const std::string &_fileName, sGenerationData &_data);
+
+#endif // MAP_IMPORT_SETTINGS_FILE_HPP

@@ -21,14 +21,15 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAPGENERATOR_D3_HPP
+#define MAPGENERATOR_D3_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+#include "map_floodfill.hpp"
+#include "map_utils.hpp"
+
+void mapGenerator_D3_generateRooms(sGenerationData &_data);
+void mapGenerator_D3_fillRooms(sGenerationData &_data);
+void mapGenerator_D3(sGenerationData &_data);
+
+#endif // MAPGENERATOR_D3_HPP

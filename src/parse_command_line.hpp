@@ -21,14 +21,11 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef PARSE_COMMAND_LINE_HPP
+#define PARSE_COMMAND_LINE_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+void _parseCommandLine(sGenerationData &_data, int _argc, char** _argv);
+
+#endif // PARSE_COMMAND_LINE_HPP

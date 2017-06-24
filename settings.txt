@@ -33,10 +33,11 @@
 <map>
 
     <map_settings>
-        <map_algorithm = AM1/>
+        <map_file_base = test.rmx/>
+        <map_algorithm = AD2/>
         <map_exporter = ER1/>
         <map_file_export = default.txt/>
-        <map_seed = 0/>
+        <map_seed = 1498092876/>
         <map_width = 100/>
         <map_height = 100/>
         <map_wall_Width = 3/>

@@ -21,14 +21,11 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAPEXPORT_DEBUG_HPP
+#define MAPEXPORT_DEBUG_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+void mapExport_Debug(const sGenerationData &_data);
+
+#endif // MAPEXPORT_DEBUG_HPP

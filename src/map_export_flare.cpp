@@ -21,14 +21,10 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#include "map_export_flare.hpp"
 
-int main(int argc, char** argv)
+void mapExport_Flare(const sGenerationData &_data)
 {
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
+    if (_data.exporter == eExporter::EF1)
+        std::cout << "exporter not yet implemented" << std::endl;
 }

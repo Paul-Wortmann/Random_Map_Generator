@@ -21,14 +21,13 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAP_FLOOD_FILL_HPP
+#define MAP_FLOOD_FILL_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+uint32_t checkTile(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_parentTile, const uint32_t &_tile);
+uint32_t checkNeighboringTiles(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_tile);
+void mapFloodFill(const sGenerationData &_data, sFillData &_fillData, const uint32_t &_startTile);
+
+#endif // MAP_FLOOD_FILL_HPP

@@ -7,7 +7,7 @@ Copyright Paul Wortmann. GNU GPL v2
 
 Build using gcc:
 ```sh
-c++ -I common main.cpp common/*.cpp common/*.hpp -o RMG
+c++ -I src main.cpp src/*.cpp src/*.hpp -o Random_Map_Generator
 ``` 
 or use the cmake file:
 ```sh

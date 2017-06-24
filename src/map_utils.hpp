@@ -21,14 +21,15 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAP_UTILS_HPP
+#define MAP_UTILS_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+void mapCheck(sGenerationData &_data);
+int16_t mapGenerator_tilesRoom(sGenerationData &_data, uint32_t _tile);
+void mapGenerator_findNeighborRooms(sGenerationData &_data);
+void mapGenerator_connectRooms_direct(sGenerationData &_data);
+void mapGenerator_connectRooms_90d(sGenerationData &_data);
+
+#endif // MAP_UTILS_HPP

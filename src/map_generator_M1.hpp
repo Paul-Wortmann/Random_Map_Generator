@@ -21,14 +21,19 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAPGENERATOR_M1_HPP
+#define MAPGENERATOR_M1_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+#include "map_floodfill.hpp"
+#include "map_utils.hpp"
+
+bool isWallTile(sGenerationData &_data, int32_t _tile);
+bool map_gen_maze_check_tile(sGenerationData &_data, int32_t _tile, eDirection _directionBias);
+void map_gen_maze(sGenerationData &_data, uint32_t _tile, eDirection _directionBias);
+bool add_room(sGenerationData &_data, sRoom &_room);
+bool connect_room(sGenerationData &_data, sRoom &_room);
+void mapGenerator_M1(sGenerationData &_data);
+
+
+#endif // MAPGENERATOR_M1_HPP

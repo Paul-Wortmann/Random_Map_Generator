@@ -21,14 +21,11 @@
  * @date 2017-06-05
  */
 
-#include "src/map_generator.hpp"
+#ifndef MAPIMPORT_ROBOENGINE_HPP
+#define MAPIMPORT_ROBOENGINE_HPP
 
-int main(int argc, char** argv)
-{
-    cMapGenerator mapGenerator;
-    sGenerationData generationData;
-    mapGenerator.parseCommandLine(generationData, argc, argv);
-    mapGenerator.generate(generationData);
-    mapGenerator.free(generationData);
-    return EXIT_SUCCESS;
-}
+#include "map_data_types.hpp"
+
+void mapImport_RoboEngine(const std::string &_fileName, sGenerationData &_data);
+
+#endif // MAPIMPORT_ROBOENGINE_HPP
